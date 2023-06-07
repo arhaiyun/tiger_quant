@@ -39,7 +39,7 @@ public class KLineUtilsTest {
         try {
             FileInputStream inputStream = new FileInputStream(gatewayConfigPath);
             TigerConfig tigerConfig = JSON.parseObject(inputStream, TigerConfig.class);
-            System.out.println(tigerConfig.toString());
+//            System.out.println(tigerConfig.toString());
         } catch (IOException e) {
             throw new TigerQuantException("parse config exception:" + e.getMessage());
         }

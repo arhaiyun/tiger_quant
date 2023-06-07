@@ -207,6 +207,15 @@ public class HsimainAlgoTest {
 
     /**
      * 多级别X-Min Kline 综合策略结果
+     *
+     * 基本设计思想：
+     * 1. 多种时间维度 k线数据综合决策
+     * 2. 截断亏损
+     * 3. 让利润奔跑
+     * 4. 市场具有共振关联性标的
+     * 5. 优秀的仓位控制策略
+     * 6. 基于历史统计数据做好充分的回测
+     *
      */
     public static void mixedMinDailyStrategy() {
 

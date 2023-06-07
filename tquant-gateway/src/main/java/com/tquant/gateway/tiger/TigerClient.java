@@ -11,12 +11,17 @@ import com.tigerbrokers.stock.openapi.client.https.client.TigerHttpClient;
  */
 public class TigerClient {
 
+    private static TigerHttpClient tigerHttpClient = null;
+
     public static TigerHttpClient getInstance() {
-        TigerConfig config = TigerConfigLoader.loadTigerConfig();
-        ClientConfig clientConfig = ClientConfig.DEFAULT_CONFIG;
-        clientConfig.tigerId = config.getTigerId();
-        clientConfig.privateKey = config.getPrivateKey();
-        clientConfig.defaultAccount = config.getAccount();
-        return TigerHttpClient.getInstance().clientConfig(clientConfig);
+        if (tigerHttpClient == null) {
+            TigerConfig config = TigerConfigLoader.loadTigerConfig();
+            ClientConfig clientConfig = ClientConfig.DEFAULT_CONFIG;
+            clientConfig.tigerId = config.getTigerId();
+            clientConfig.privateKey = config.getPrivateKey();
+            clientConfig.defaultAccount = config.getAccount();
+            tigerHttpClient = TigerHttpClient.getInstance().clientConfig(clientConfig);
+        }
+        return tigerHttpClient;
     }
 }
