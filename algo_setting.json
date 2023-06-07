@@ -1,21 +1,34 @@
 {
   "BestLimitAlgo": {
     "enable": false,
-    "class":"com.tquant.algorithm.algos.BestLimitAlgo",
+    "class": "com.tquant.algorithm.algos.BestLimitAlgo",
     "direction": "BUY",
     "volume": 100,
     "symbol": "00700"
   },
+  "TeslaDailyAlgo": {
+    "enable": false,
+    "class": "com.tquant.algorithm.algos.TeslaDailyAlgo",
+    "direction": "BUY",
+    "volume": 120,
+    "symbol": "TSLA"
+  },
+  "NasdaqDailyAlgo": {
+    "enable": false,
+    "class": "com.tquant.algorithm.algos.NasdaqDailyAlgo",
+    "volume": 1,
+    "symbol": "Nasdaq"
+  },
   "DmaAlgo": {
     "enable": false,
-    "class":"com.tquant.algorithm.algos.DmaAlgo",
+    "class": "com.tquant.algorithm.algos.DmaAlgo",
     "direction": "BUY",
     "price": 13.2,
     "volume": 100
   },
   "SmaAlgo": {
     "enable": false,
-    "class":"com.tquant.algorithm.algos.SmaAlgo",
+    "class": "com.tquant.algorithm.algos.SmaAlgo",
     "symbol": "AAPL",
     "bars": 300
   },
@@ -26,8 +39,8 @@
     "expiryDate": "2022-09-02"
   },
   "ThetaGangAlgo": {
-    "enable": true,
-    "class":"com.tquant.algorithm.algos.ThetaGangAlgo",
+    "enable": false,
+    "class": "com.tquant.algorithm.algos.ThetaGangAlgo",
     "account": {
       "account_id": "643795",
       "cancel_orders": true,

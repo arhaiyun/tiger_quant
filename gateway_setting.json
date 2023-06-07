@@ -2,7 +2,9 @@
   "gateway": "TigerGateway",
   "apiLogEnable": true,
   "apiLogPath": "log/",
-  "tigerId": "",
-  "account": "",
-  "privateKey": ""
+  "tigerId": "20151999",
+  "account": "20221226135452241",
+  "simulateAccount": "7244563",
+  "privateKey": "MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAI8dYwLi3dhijIe3xTGP8aV3ie1RlnM82hyk9W7AO2D6B2ORQSEXatfyLzYIBTyz61uApU3mH2sJ7OUj4H0IyIdYeSKFwOXgWsMip5nYMfIgskhfsX7zFq8P5ULIhBYRzon1d7dw2CEqld2+vjziuvLOF5BG4PniMKMhh02ZCBK3AgMBAAECgYAXJ/4ZPXP/yxJJ82Yous2ypEDg8U6Snsn70IUVwmzZKBuB9MLBA/T5s+oHqAyQ4du3Fn2ouQ9kVlrKSJ/OG1m2rpVygHM6jhGdkbIqP5Z/HP4afwVgl4adZ5qLo00TM5KIKTWa0rh8Q+106exY6s/nKeroXpuREsJrgMGiaiiXwQJBAMVpY3qBOVBNJDi2ycndKoS3Tn8aqkUroGCFJrUndftgsR8fRrEMn7IeHH+Y3lkp2MZVrldOTvaRzHbt/UWhMlkCQQC5lrif6688OoiG3nddZt6CEioiQg3TTxQixkvU9kzUuLFxrf+Qfl94Cjop95/WUWqGBHV0Qgqotic5M41DyCuPAkAgI+5sTYm1Rzn0ed4UnYuEnAuNqhu6s0WjMUqCB/CvgqiTtpXd0X5Wk4x0QcFBpwyCDgUadcdpYYd2fXzUz0/RAkAg59xsXnl/kFFMuH0pjme9YEMgN94DrW3AjLA9Xj5ZKTYtFdDOadm7ivStJD6u3Vip0niQ2HTTXRivR7iwX/l5AkBR9hDkiE0b4k9HEP+SBImAfz1qeIxvaSDwk/7gJ/ke/8iPWKJQ+oLq9zAKwyKKTrs0yRAz4Ihj14lAnq6OYDeI",
+  "url": "https://developer.itigerup.com/profile?lang=zh_TW&_sasdk=fNDEzMjgzNjc2NTEyMjQyMA&_gl=1*1e76949*_ga*MTk3OTMxMTgzNS4xNjgwOTYxNjYy*_ga_LECRLCDT1K*MTY4NDY3ODM4NS4xLjEuMTY4NDY3ODQwNS4wLjAuMA.."
 }

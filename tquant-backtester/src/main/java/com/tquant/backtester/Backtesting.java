@@ -1,6 +1,6 @@
 package com.tquant.backtester;
 
-import com.tquant.algorithm.algos.SmaAlgo;
+import com.tquant.algorithm.algos.strategy.SmaAlgo;
 import com.tquant.bootstrap.command.CliRunner;
 import com.tquant.bootstrap.command.CommandExecuteTemplate;
 import com.tquant.core.core.AlgoEngine;

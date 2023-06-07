@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algos;
+package com.tquant.algorithm.algos.strategy;
 
 import com.tquant.core.core.AlgoTemplate;
 import com.tquant.core.model.data.Order;

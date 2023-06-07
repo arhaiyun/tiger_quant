@@ -120,14 +120,14 @@ kill命令执行时会同时执行项目的stop方法回调。
 {
   "BestLimitAlgo": {
     "enable": false,
-    "class":"com.tquant.algorithm.algos.BestLimitAlgo",
+    "class":"com.tquant.algorithm.algos.strategy.BestLimitAlgo",
     "direction": "BUY",
     "volume": 100,
     "symbol": "00700"
   },
   "DmaAlgo": {
     "enable": false,
-    "class":"com.tquant.algorithm.algos.DmaAlgo",
+    "class":"com.tquant.algorithm.algos.strategy.DmaAlgo",
     "direction": "BUY",
     "price": 13.2,
     "volume": 100
@@ -191,7 +191,7 @@ Thetagang是我们封装的一个期权策略，策略的意图是赚取theta（
 ```json
  "ThetaGangAlgo": {
     "enable": true, //是否启用策略
-    "class":"com.tquant.algorithm.algos.ThetaGangAlgo", //对应策略实现的代码路径
+    "class":"com.tquant.algorithm.algos.strategy.ThetaGangAlgo", //对应策略实现的代码路径
     "account": {
       "account_id": "20190419163107900", //使用的账号信息，可以配置为模拟账号或综合账号
       "cancel_orders": true, //策略执行前，是否要取消已经挂出去的订单

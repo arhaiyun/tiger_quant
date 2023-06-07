@@ -21,4 +21,5 @@ public class TigerConfig implements Config {
   private String socketUrl;
   private String apiCallbackClassName;
   private Class<?> apiCallbackClass;
+
 }

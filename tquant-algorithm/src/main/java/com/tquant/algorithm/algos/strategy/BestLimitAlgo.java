@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algos;
+package com.tquant.algorithm.algos.strategy;
 
 import com.tquant.core.core.AlgoTemplate;
 import com.tquant.core.model.data.Bar;
@@ -8,6 +8,7 @@ import com.tquant.core.model.data.Trade;
 import com.tquant.core.model.enums.Direction;
 import com.tquant.core.model.enums.OrderType;
 import com.tquant.core.util.BarGenerator;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -113,5 +114,9 @@ public class BestLimitAlgo extends AlgoTemplate {
 
   public void on2minBar(Bar bar) {
     log("{} on2minBar {}", bar);
+  }
+
+  public static void main(String[] args) {
+    System.out.println("hello world");
   }
 }

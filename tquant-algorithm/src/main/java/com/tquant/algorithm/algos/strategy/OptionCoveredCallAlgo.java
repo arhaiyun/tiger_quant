@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algos;
+package com.tquant.algorithm.algos.strategy;
 
 import com.tigerbrokers.stock.openapi.client.https.domain.option.item.OptionRealTimeQuote;
 import com.tigerbrokers.stock.openapi.client.https.domain.option.item.OptionRealTimeQuoteGroup;
