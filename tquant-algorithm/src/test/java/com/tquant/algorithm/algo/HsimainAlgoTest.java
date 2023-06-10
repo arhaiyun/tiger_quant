@@ -227,7 +227,7 @@ public class HsimainAlgoTest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
         int counter = 0;
 
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230605", "09:30", "11:00");
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230501", "20230605", "09:30", "11:00");
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
