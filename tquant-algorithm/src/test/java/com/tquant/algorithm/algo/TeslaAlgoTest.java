@@ -55,14 +55,15 @@ public class TeslaAlgoTest {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
+        // TSLA NVDA BABA BILI PDD
         symbols.add("TSLA");
         KType kType = KType.day;
-        String beginTime = "2022-04-30";
+        String beginTime = "2023-04-01";
         String endTime = "2023-06-10";
 
 
         List<KlineItem> kLineItems = kLineUtils.getAllStockKlineItems(symbols, kType, beginTime, endTime, 800);
-        System.out.println(Arrays.toString(kLineItems.toArray()));
+        // System.out.println(Arrays.toString(kLineItems.toArray()));
         List<KlinePoint> klinePoints = kLineItems.get(0).getItems();
 
         BigDecimal currentPosition = BigDecimal.ZERO;

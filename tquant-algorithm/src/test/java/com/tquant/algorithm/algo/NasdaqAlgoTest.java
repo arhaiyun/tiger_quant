@@ -15,7 +15,6 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,9 +27,9 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  * @author arhaiyun
  * @date 2023/05/20
  */
-public class HsimainAlgoTest {
+public class NasdaqAlgoTest {
 
-    private static final String SYMBOL = "HSImain";
+    private static final String SYMBOL = "NQmain";
     private static final int SHARE_PER_TRADE = 1;
     private static final BigDecimal COMMISSION_RATE = BigDecimal.valueOf(0.002);
 
@@ -59,28 +58,29 @@ public class HsimainAlgoTest {
 
     /**
      * 1.通过老虎证券的 Java open API 获取HSImain股指期货每分钟k线数据，获取时间段通过参数指定如
-     * String beginTime = "2023-05-30 22:48:00";
-     * String endTime = "2023-05-30 23:00:00";
-     * <p>
+     *      String beginTime = "2023-05-30 22:48:00";
+     *      String endTime = "2023-05-30 23:00:00";
+     *
      * 2.如果当前x分钟收涨
-     * a.当前没有持仓则以收盘价买入1单位
-     * b.如果当前持有1单位多头，则保持持仓不动
-     * c.如果当前持有1单位空头，则以收盘价先买入1单位平仓，再以收盘价买入1单位多头持仓
-     * <p>
+     *   a.当前没有持仓则以收盘价买入1单位
+     *   b.如果当前持有1单位多头，则保持持仓不动
+     *   c.如果当前持有1单位空头，则以收盘价先买入1单位平仓，再以收盘价买入1单位多头持仓
+     *
      * 3.如果当前x分钟收跌
-     * a.当前没有持仓则以收盘价卖出1单位做空
-     * b.如果当前持有1单位空头，则保持持仓不动
-     * c.如果当前持有1单位多头，则以收盘价先卖出1单位平仓，再以收盘价卖出1单位空头持仓
-     * <p>
+     *   a.当前没有持仓则以收盘价卖出1单位做空
+     *   b.如果当前持有1单位空头，则保持持仓不动
+     *   c.如果当前持有1单位多头，则以收盘价先卖出1单位平仓，再以收盘价卖出1单位空头持仓
+     *
      * 4.每单位买或者卖手续费是50港币，初始账户资金为200000港币，做多或者做空会分别占据相应的购买力50000
-     * <p>
+     *
      * 5.最终打印每笔交易记录，并计算盈亏金额，盈亏比率并打印结果
+     *
      */
     public static void testMinDailyStrategy() {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add("HSImain");
+        symbols.add("NQmain");
         FutureKType kType = FutureKType.min5;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -207,7 +207,7 @@ public class HsimainAlgoTest {
 
     /**
      * 多级别X-Min Kline 综合策略结果
-     * <p>
+     *
      * 基本设计思想：
      * 1. 多种时间维度 k线数据综合决策
      * 2. 截断亏损
@@ -215,12 +215,13 @@ public class HsimainAlgoTest {
      * 4. 市场具有共振关联性标的
      * 5. 优秀的仓位控制策略
      * 6. 基于历史统计数据做好充分的回测
+     *
      */
     public static void mixedMinDailyStrategy() {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add("HSImain");
+        symbols.add("NQmain");
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -347,54 +348,10 @@ public class HsimainAlgoTest {
         }
     }
 
-    public static void averageTrueRangeStat() {
-        KlineUtils kLineUtils = new KlineUtils();
-        List<String> symbols = Lists.newArrayList();
-        symbols.add("HSImain");
-        FutureKType kType = FutureKType.hour2;
-        // 或者使用 ZoneOffset.UTC
-        ZoneOffset offset = ZoneOffset.ofHours(8);
-        int counter = 0;
-
-        BigDecimal sumRange = BigDecimal.ZERO;
-        int count = 0;
-
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230610", "09:15", "11:15");
-        for (TradeTimeRange tradeTimeRange : tradeTimeList) {
-            BigDecimal range = BigDecimal.ZERO;
-            counter++;
-            String beginTime = tradeTimeRange.getBeginTime();
-            String endTime = tradeTimeRange.getEndTime();
-            System.out.println("\n\nIndex: " + counter + " 交易开始时间：beginTime:" + beginTime + " 结束时间:" + endTime);
-
-            List<FutureKlineBatchItem> kLineItems = kLineUtils.getAllFutureKlineItems(symbols, kType, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            System.out.println(Arrays.toString(kLineItems.toArray()));
-            if (kLineItems.size() == 0) {
-                System.out.println("返回数据为空");
-                continue;
-            }
-
-            List<FutureKlineItem> klinePoints = kLineItems.get(0).getItems();
-            List<FutureKlineItem> sortedKlineList = klinePoints.stream()
-                    .sorted(Comparator.comparingLong(FutureKlineItem::getTime))
-                    .collect(Collectors.toList());
-            for (FutureKlineItem futureKlineItem : sortedKlineList) {
-                // range = futureKlineItem.getClose().subtract(futureKlineItem.getOpen()).abs();
-                range = futureKlineItem.getHigh().subtract(futureKlineItem.getLow()).abs();
-                System.out.println("Daily range:" + range);
-                count++;
-                sumRange = sumRange.add(range);
-            }
-        }
-        System.out.println("Average range:" + sumRange.divide(new BigDecimal(count), 2, BigDecimal.ROUND_HALF_UP));
-    }
-
-
     public static void main(String[] args) {
         // testMinDailyStrategy();
         // System.out.println(TradeTimeUtils.getTradeTimeList("20230101", "20230601", "09:30", "11:30"));
-//        mixedMinDailyStrategy();
-        averageTrueRangeStat();
+        mixedMinDailyStrategy();
     }
 
 }
