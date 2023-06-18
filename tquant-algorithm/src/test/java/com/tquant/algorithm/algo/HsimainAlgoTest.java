@@ -47,7 +47,8 @@ public class HsimainAlgoTest {
     private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN_2 = new BigDecimal(50);
     private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
 
-    private static final Long SLEEP_MILL_SEC = 5000L;
+    private static final Long SLEEP_MILL_SEC = 1500L;
+    private static final String year = "2022";
     private static final String month = "06";
     private static final String dayBeginTime = "09:30";
     private static final String dayEndTime = "11:45";
@@ -94,7 +95,7 @@ public class HsimainAlgoTest {
 
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2023" + month + "01", "2023" + month + "31", dayBeginTime, dayEndTime);
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230101", "20230631", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0101", year + "1231", dayBeginTime, dayEndTime);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
