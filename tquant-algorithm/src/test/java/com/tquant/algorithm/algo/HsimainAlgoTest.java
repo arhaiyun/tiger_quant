@@ -32,15 +32,14 @@ public class HsimainAlgoTest {
 
     private static final String SYMBOL = "HSImain";
     private static final int SHARE_PER_TRADE = 1;
+    private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
     private static final BigDecimal COMMISSION_RATE = BigDecimal.valueOf(0.002);
 
     // 每点交易盈亏 50HKD
     private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);
     // 1单位买卖手续费 25HKD
     private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
-    private static final int PRICE_CHANGE_FACTOR_3MIN = 20;
-    private static BigDecimal lastTransactionPrice = BigDecimal.ZERO;
-    private static BigDecimal transactionPrice = BigDecimal.ZERO;
+    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(15);
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -102,6 +101,7 @@ public class HsimainAlgoTest {
             BigDecimal pnl = BigDecimal.ZERO;
             // 交易费用
             BigDecimal tradeFee = BigDecimal.ZERO;
+            BigDecimal lastTransactionPrice = BigDecimal.ZERO;
 
             // 记录交易记录
             List<TradeRecord> tradeRecords = new ArrayList<>();
@@ -125,7 +125,7 @@ public class HsimainAlgoTest {
 
                 BigDecimal openPrice = kLineItem.getOpen();
                 BigDecimal closePrice = kLineItem.getClose();
-                transactionPrice = closePrice;
+                BigDecimal transactionPrice = closePrice;
                 BigDecimal changePrice = closePrice.subtract(openPrice);
 
                 if (changePrice.compareTo(new BigDecimal(30)) >= 0) { // 当前分钟收涨
@@ -216,17 +216,17 @@ public class HsimainAlgoTest {
      * 5. 优秀的仓位控制策略
      * 6. 基于历史统计数据做好充分的回测
      */
-    public static void mixedMinDailyStrategy() {
+    public static void mixedMinDailyStrategy() throws InterruptedException {
 
-        KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
         symbols.add("HSImain");
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
-        int counter = 0;
 
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230501", "20230605", "09:30", "11:00");
+        int counter = 0;
+//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230617", "09:30", "11:30");
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230617", "09:30", "11:30");
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
@@ -236,89 +236,188 @@ public class HsimainAlgoTest {
             longPosition = 0;
             shortPosition = 0;
 
-            // 实现盈亏不包含交易费
+            // 日内盈亏（不包含交易费）
             BigDecimal pnlWithoutFee = BigDecimal.ZERO;
-            // 实现盈亏
+            // 日内实现盈亏
             BigDecimal pnl = BigDecimal.ZERO;
-            // 交易费用
+            // 日内交易费用
             BigDecimal tradeFee = BigDecimal.ZERO;
 
-            // 记录交易记录
+            // 指标：日内最高、低点位
+            BigDecimal dailyHigh = BigDecimal.ZERO;
+            BigDecimal dailyLow = BigDecimal.ZERO;
+
+            // 指标：最新kline止损点位，多仓为例：上一3min kline 最低点，或者最新3min kline 跌幅>=20
+            BigDecimal stopLosePrice = BigDecimal.ZERO;
+            BigDecimal lastTransactionPrice = BigDecimal.ZERO;
+            BigDecimal transactionPrice = BigDecimal.ZERO;
+
+            // 指标：连续上涨、下跌 xmin kline数
+            int consecutiveRise = 0;
+            int consecutiveFall = 0;
+
+            BigDecimal consecutiveRisePoint = BigDecimal.ZERO;
+            BigDecimal consecutiveFallPoint = BigDecimal.ZERO;
+
+            // 上下文：上一根xmin kilne数值
+            FutureKlineItem last1MinKline = null;
+            FutureKlineItem last3MinKline = null;
+            FutureKlineItem last5MinKline = null;
+
+            // 记录日内交易记录
             List<TradeRecord> tradeRecords = new ArrayList<>();
-            List<FutureKlineBatchItem> kLineItems = kLineUtils.getAllFutureKlineItems(symbols, kType, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            // System.out.println(Arrays.toString(kLineItems.toArray()));
-            if (kLineItems.size() == 0) {
-                System.out.println("返回数据为空");
+
+            // 获取日内1-3-5分钟级别k线数据
+            // List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 400);
+            List<FutureKlineItem> kLineItems3Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 400);
+
+            if (kLineItems3Min.size() == 0) {
+                System.out.println("返回kline数据为空");
                 continue;
+            } else {
+                System.out.println("返回kline数据:" + kLineItems3Min.size());
             }
 
-            List<FutureKlineItem> klinePoints = kLineItems.get(0).getItems();
-            List<FutureKlineItem> sortedKlineList = klinePoints.stream()
-                    .sorted(Comparator.comparingLong(FutureKlineItem::getTime))
-                    .collect(Collectors.toList());
-            // System.out.println(Arrays.toString(sortedKlineList.toArray()));
+            FutureKlineItem klineItem = kLineItems3Min.get(0);
+            if (klineItem.getClose().compareTo(klineItem.getOpen()) > 0) {
+                consecutiveRise = 1;
+                consecutiveRisePoint = klineItem.getClose().subtract(klineItem.getOpen());
+            } else {
+                consecutiveFall = 1;
+                consecutiveFallPoint = klineItem.getOpen().subtract(klineItem.getClose());
+            }
 
-            for (FutureKlineItem kLineItem : sortedKlineList) {
-                LocalDateTime tradeDateTime = LocalDateTime.ofEpochSecond(kLineItem.getLastTime() / 1000, 0, offset);
+            for (int i = 1; i < kLineItems3Min.size(); i++) {
+                // TODO: 获取3根对应的1minKline ... 细节化
+
+                klineItem = kLineItems3Min.get(i);
+                FutureKlineItem prevKlineItem = kLineItems3Min.get(i - 1);
+
+                // 日内最高、最低点，用于做相对位置的参考
+                dailyHigh = dailyHigh.compareTo(klineItem.getHigh()) > 0 ? dailyHigh : klineItem.getHigh();
+                dailyLow = dailyLow.compareTo(klineItem.getLow()) < 0 ? dailyLow : klineItem.getLow();
+
+                // 记录交易时间
+                LocalDateTime tradeDateTime = LocalDateTime.ofEpochSecond(klineItem.getLastTime() / 1000, 0, offset);
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String tradeTime = tradeDateTime.format(formatter);
 
-                BigDecimal openPrice = kLineItem.getOpen();
-                BigDecimal closePrice = kLineItem.getClose();
-                transactionPrice = closePrice;
-                BigDecimal changePrice = closePrice.subtract(openPrice);
-                BigDecimal highChangePrice = kLineItem.getHigh().subtract(closePrice);
-                BigDecimal lowChangePrice = closePrice.subtract(kLineItem.getLow());
+                BigDecimal closePrice = klineItem.getClose();
 
-                if (closePrice.compareTo(openPrice) > 0 && lowChangePrice.compareTo(new BigDecimal(PRICE_CHANGE_FACTOR_3MIN)) >= 0) { // 当前分钟收涨
-                    if (longPosition == 0 && shortPosition == 0) { // 当前没有持仓
+                if (longSignal(klineItem, prevKlineItem, consecutiveFall)) {
+                    if (longPosition == 0 && shortPosition == 0) {
+                        transactionPrice = closePrice;
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.BUY, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         lastTransactionPrice = transactionPrice;
                         tradeRecords.add(tradeRecord);
-                        longPosition = 1;
-                        shortPosition = 0;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
-                    } else if (longPosition == 0 && shortPosition == 1) { // 当前持有一单位空头持仓
+                        // 买入1单位多头仓位
+                        longPosition += SHARE_PER_TRADE;
+
+                        // 交易费用
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        // 多单止损价格
+                        stopLosePrice = closePrice.subtract(new BigDecimal(25));
+                    } else if (longPosition == 0 && shortPosition == SHARE_PER_TRADE) { // 当前持有一单位空头持仓
+                        // 结合止损价设定实际交易价格
+                        if (closePrice.compareTo(stopLosePrice) > 0) {
+                            transactionPrice = stopLosePrice;
+                        } else {
+                            transactionPrice = closePrice;
+                        }
                         // 先平仓空头1单位
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.BUY, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         tradeRecords.add(tradeRecord);
                         shortPosition = 0;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
-                        pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR));
-                        // System.out.println("lastTransactionPrice:" + lastTransactionPrice + " transactionPrice:" +
-                        // transactionPrice);
+
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
 
                         // 做多1单位
                         tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.BUY, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         lastTransactionPrice = transactionPrice;
                         tradeRecords.add(tradeRecord);
-                        longPosition = 1;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
+
+                        longPosition += SHARE_PER_TRADE;
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        // stopLosePrice = openPrice.subtract(new BigDecimal(5));
+                        stopLosePrice = closePrice.subtract(new BigDecimal(25));
                     }
-                } else if (closePrice.compareTo(openPrice) < 0 && highChangePrice.compareTo(new BigDecimal(PRICE_CHANGE_FACTOR_3MIN)) >= 0) { // 当前分钟收跌
-                    if (shortPosition == 0 && longPosition == 0) { // 当前没有持仓
+                } else if (shortSignal(klineItem, prevKlineItem, consecutiveRise)) {
+                    if (longPosition == 0 && shortPosition == 0) {
+                        transactionPrice = closePrice;
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         lastTransactionPrice = transactionPrice;
                         tradeRecords.add(tradeRecord);
-                        shortPosition = 1;
-                        longPosition = 0;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
-                    } else if (shortPosition == 0 && longPosition == 1) { // 当前持有一单位多头持仓
-                        // 先平仓空头1单位
+                        // 买入1单位多头仓位
+                        shortPosition += SHARE_PER_TRADE;
+
+                        // 交易费用
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        // 空单止损价格
+                        stopLosePrice = closePrice.add(new BigDecimal(25));
+                    } else if (longPosition == SHARE_PER_TRADE && shortPosition == 0) {
+                        // 结合止损价设定实际交易价格
+                        if (closePrice.compareTo(stopLosePrice) < 0) {
+                            transactionPrice = stopLosePrice;
+                        } else {
+                            transactionPrice = closePrice;
+                        }
+                        // 先平仓多头1单位
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         tradeRecords.add(tradeRecord);
                         longPosition = 0;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
-                        pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR));
-                        // System.out.println("lastTransactionPrice:" + lastTransactionPrice + " transactionPrice:" +
-                        // transactionPrice);
+
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
 
                         // 做空1单位
                         tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, SHARE_PER_TRADE, TRANSACTION_FEE);
                         lastTransactionPrice = transactionPrice;
                         tradeRecords.add(tradeRecord);
-                        shortPosition = 1;
-                        tradeFee = tradeFee.add(TRANSACTION_FEE);
+
+                        shortPosition += SHARE_PER_TRADE;
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
+                        stopLosePrice = closePrice.add(new BigDecimal(25));
+                    }
+
+                    if (klineItem.getClose().compareTo(prevKlineItem.getClose()) > 0) {
+                        // 当前 k 线上涨
+                        consecutiveRise++;
+                        consecutiveFall = 0;
+                    } else if (klineItem.getClose().compareTo(prevKlineItem.getClose()) < 0) {
+                        // 当前 k 线下跌
+                        consecutiveFall++;
+                        consecutiveRise = 0;
+                    } else {
+                        // 当前 k 线平盘
+                        consecutiveRise = 0;
+                        consecutiveFall = 0;
+                    }
+                }
+
+                // 最后一根k线, 平仓日内所有的仓位
+                if (i == kLineItems3Min.size() - 1) {
+                    if (longPosition > 0) {
+                        transactionPrice = closePrice;
+                        TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, longPosition, TRANSACTION_FEE);
+                        tradeRecords.add(tradeRecord);
+                        // 交易费用
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(new BigDecimal(longPosition)));
+                        pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(new BigDecimal(longPosition)));
+                        // 买入1单位多头仓位
+                        longPosition = 0;
+                    }
+
+                    if (shortPosition > 0) {
+                        transactionPrice = closePrice;
+                        TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.BUY, transactionPrice, shortPosition, TRANSACTION_FEE);
+                        tradeRecords.add(tradeRecord);
+                        // 交易费用
+                        tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(new BigDecimal(shortPosition)));
+                        pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(new BigDecimal(shortPosition)));
+                        // 买入1单位多头仓位
+                        shortPosition = 0;
                     }
                 }
             }
@@ -338,14 +437,57 @@ public class HsimainAlgoTest {
             accumulatePnl = accumulatePnl.add(pnl);
 
             System.out.println("当前持仓 longPosition: " + longPosition + ", shortPosition:" + shortPosition);
-            System.out.println("当日交易记录数: " + tradeRecords.size() + ", 当日交易成本:" + tradeFee);
+            System.out.println("当日交易记录数: " + tradeRecords.size() * SHARE_PER_TRADE + ", 当日交易成本:" + tradeFee);
             System.out.println("当日收益不包含手续费 pnlWithoutFee:" + pnlWithoutFee);
             System.out.println("当日收益净值 pnl:" + pnl);
             System.out.println("累计交易记录数 tradeCount:" + (tradeCount = tradeCount + tradeRecords.size()));
             System.out.println("累计交易成本 accumulateFee:" + accumulateFee);
             System.out.println("累计收益净值 accumulatePnl:" + accumulatePnl);
+
+            Thread.sleep(1500);
         }
     }
+
+    public static void main(String[] args) throws InterruptedException {
+        // testMinDailyStrategy();
+        // System.out.println(TradeTimeUtils.getTradeTimeList("20230101", "20230601", "09:30", "11:30"));
+        mixedMinDailyStrategy();
+//        averageTrueRangeStat();
+    }
+
+
+    private static boolean klineRise(FutureKlineItem kLineItem) {
+        if (kLineItem != null) {
+            return kLineItem.getClose().compareTo(kLineItem.getOpen()) > 0;
+        }
+        return false;
+    }
+
+    private static boolean longSignal(FutureKlineItem klineItem, FutureKlineItem prevKlineItem, int consecutiveFall) {
+        if (klineItem == null || prevKlineItem == null) {
+            return false;
+        }
+        BigDecimal changePrice = klineItem.getClose().subtract(klineItem.getOpen());
+        // 当前k线变化超过阈值
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+            return true;
+        }
+        // 收涨且前面存在连续2根下跌k线
+        return klineRise(klineItem) && consecutiveFall >= 3;
+    }
+
+    private static boolean shortSignal(FutureKlineItem klineItem, FutureKlineItem prevKlineItem, int consecutiveRise) {
+        if (klineItem == null || prevKlineItem == null) {
+            return false;
+        }
+        BigDecimal changePrice = klineItem.getOpen().subtract(klineItem.getClose());
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+            return true;
+        }
+        // 收跌且前面存在连续2根上涨k线
+        return !klineRise(klineItem) && consecutiveRise >= 3;
+    }
+
 
     public static void averageTrueRangeStat() {
         KlineUtils kLineUtils = new KlineUtils();
@@ -387,14 +529,6 @@ public class HsimainAlgoTest {
             }
         }
         System.out.println("Average range:" + sumRange.divide(new BigDecimal(count), 2, BigDecimal.ROUND_HALF_UP));
-    }
-
-
-    public static void main(String[] args) {
-        // testMinDailyStrategy();
-        // System.out.println(TradeTimeUtils.getTradeTimeList("20230101", "20230601", "09:30", "11:30"));
-//        mixedMinDailyStrategy();
-        averageTrueRangeStat();
     }
 
 }

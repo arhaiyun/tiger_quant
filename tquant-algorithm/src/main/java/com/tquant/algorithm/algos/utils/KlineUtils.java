@@ -3,6 +3,7 @@ package com.tquant.algorithm.algos.utils;
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.client.TigerHttpClient;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
+import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineItem;
 import com.tigerbrokers.stock.openapi.client.https.domain.quote.item.KlineItem;
 import com.tigerbrokers.stock.openapi.client.https.request.future.FutureKlineRequest;
 import com.tigerbrokers.stock.openapi.client.https.request.quote.QuoteKlineRequest;
@@ -14,8 +15,10 @@ import com.tigerbrokers.stock.openapi.client.struct.enums.RightOption;
 import com.tigerbrokers.stock.openapi.client.struct.enums.TimeZoneId;
 import com.tquant.gateway.tiger.TigerClient;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * K线数据获取工具类
@@ -39,10 +42,10 @@ public class KlineUtils {
      * @param endTime
      * @return
      */
-    public List<KlineItem> getStockKlineItems(List<String> symbols,
-                                              KType kType,
-                                              String beginTime, String endTime,
-                                              Integer limit) {
+    public static List<KlineItem> getStockKlineItems(List<String> symbols,
+                                                     KType kType,
+                                                     String beginTime, String endTime,
+                                                     Integer limit) {
         List<KlineItem> klineItems = Lists.newArrayList();
 
         TigerHttpClient client = TigerClient.getInstance();
@@ -70,10 +73,10 @@ public class KlineUtils {
      * @param endTime
      * @return
      */
-    public List<KlineItem> getAllStockKlineItems(List<String> symbols,
-                                                 KType kType,
-                                                 String beginTime, String endTime,
-                                                 Integer limit) {
+    public static List<KlineItem> getAllStockKlineItems(List<String> symbols,
+                                                        KType kType,
+                                                        String beginTime, String endTime,
+                                                        Integer limit) {
         TigerHttpClient client = TigerClient.getInstance();
         QuoteKlineRequest request = QuoteKlineRequest.newRequest(symbols, kType, beginTime, endTime, TimeZoneId.Shanghai);
         request.withLimit(limit);
@@ -125,10 +128,10 @@ public class KlineUtils {
      * @param endTime
      * @return
      */
-    public List<FutureKlineBatchItem> getFutureKlineItems(List<String> contractCodes,
-                                                          FutureKType kType,
-                                                          Long beginTime, Long endTime,
-                                                          Integer limit) {
+    public static List<FutureKlineBatchItem> getFutureKlineItems(List<String> contractCodes,
+                                                                 FutureKType kType,
+                                                                 Long beginTime, Long endTime,
+                                                                 Integer limit) {
         List<FutureKlineBatchItem> klineItems = Lists.newArrayList();
         TigerHttpClient client = TigerClient.getInstance();
 
@@ -155,10 +158,10 @@ public class KlineUtils {
      * @param endTime
      * @return
      */
-    public List<FutureKlineBatchItem> getAllFutureKlineItems(List<String> contractCodes,
-                                                             FutureKType kType,
-                                                             Long beginTime, Long endTime,
-                                                             Integer limit) {
+    public static List<FutureKlineBatchItem> getAllFutureKlineItems(List<String> contractCodes,
+                                                                    FutureKType kType,
+                                                                    Long beginTime, Long endTime,
+                                                                    Integer limit) {
         List<FutureKlineBatchItem> klineItems = Lists.newArrayList();
 
         TigerHttpClient client = TigerClient.getInstance();
@@ -195,5 +198,22 @@ public class KlineUtils {
         }
 
         return klineItems;
+    }
+
+    public static List<FutureKlineItem> getSortedFutureKlineItems(List<String> contractCodes,
+                                                                  FutureKType kType,
+                                                                  Long beginTime, Long endTime,
+                                                                  Integer limit) {
+        List<FutureKlineBatchItem> klineItems = getAllFutureKlineItems(contractCodes, kType, beginTime, endTime, limit);
+        if (klineItems.size() == 0) {
+            return Lists.newArrayList();
+        }
+
+        List<FutureKlineItem> klinePoints = klineItems.get(0).getItems();
+        List<FutureKlineItem> sortedKlineList = klinePoints.stream()
+                .sorted(Comparator.comparingLong(FutureKlineItem::getTime))
+                .collect(Collectors.toList());
+
+        return sortedKlineList;
     }
 }
