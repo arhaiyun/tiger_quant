@@ -30,16 +30,16 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  */
 public class NasdaqAlgoTest {
 
-    private static final String SYMBOL = "HSImain";
-    private static final int SHARE_PER_TRADE = 2;
+    private static final String SYMBOL = "NQmain";
+    private static final int SHARE_PER_TRADE = 1;
     private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
     private static final BigDecimal COMMISSION_RATE = BigDecimal.valueOf(0.002);
 
     // 每点交易盈亏 50HKD
-    private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);
+    private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(10);
     // 1单位买卖手续费 25HKD
-    private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
-    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(15);
+    private static final BigDecimal TRANSACTION_FEE = new BigDecimal(3);
+    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(10);
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -70,14 +70,14 @@ public class NasdaqAlgoTest {
     public static void mixedMinDailyStrategy() throws InterruptedException {
 
         List<String> symbols = Lists.newArrayList();
-        symbols.add("HSImain");
+        symbols.add(SYMBOL);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
-        ZoneOffset offset = ZoneOffset.ofHours(8);
+        ZoneOffset offset = ZoneOffset.ofHours(-5);
 
         int counter = 0;
-//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230617", "09:30", "11:30");
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230617", "09:30", "11:30");
+        // 实际时间映射 21:30->20:30
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230616", "20230617", "21:30", "23:00");
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
