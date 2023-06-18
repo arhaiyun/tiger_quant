@@ -32,7 +32,7 @@ public class HsimainAlgoTest {
 
     private static final String SYMBOL = "HSImain";
     private static final int ACCUMULATE_CNT = 2;
-    private static final int SHARE_PER_TRADE = 1;
+    private static final int SHARE_PER_TRADE = 2;
     private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
 
     // 每点交易盈亏 HKD
@@ -51,7 +51,7 @@ public class HsimainAlgoTest {
     private static final String year = "2022";
     private static final String month = "06";
     private static final String dayBeginTime = "09:30";
-    private static final String dayEndTime = "11:45";
+    private static final String dayEndTime = "14:45";
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
