@@ -1,0 +1,705 @@
+"C:\Program Files\Java\jdk1.8.0_101\bin\java.exe" "-javaagent:D:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.1.1\lib\idea_rt.jar=57509:D:\Program Files\JetBrains\IntelliJ IDEA Community Edition 2023.1.1\bin" -Dfile.encoding=UTF-8 -classpath "C:\Program Files\Java\jdk1.8.0_101\jre\lib\charsets.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\deploy.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\access-bridge-64.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\cldrdata.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\dnsns.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\jaccess.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\jfxrt.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\localedata.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\nashorn.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunec.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunjce_provider.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunmscapi.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\sunpkcs11.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\ext\zipfs.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\javaws.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jce.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jfr.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jfxswt.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\jsse.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\management-agent.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\plugin.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\resources.jar;C:\Program Files\Java\jdk1.8.0_101\jre\lib\rt.jar;D:\arhaiyun\projects\tiger_quant\tquant-algorithm\target\test-classes;D:\arhaiyun\projects\tiger_quant\tquant-algorithm\target\classes;D:\arhaiyun\projects\tiger_quant\tquant-core\target\classes;C:\Users\henry\.m2\repository\org\slf4j\slf4j-api\1.7.28\slf4j-api-1.7.28.jar;C:\Users\henry\.m2\repository\ch\qos\logback\logback-classic\1.2.9\logback-classic-1.2.9.jar;C:\Users\henry\.m2\repository\ch\qos\logback\logback-core\1.2.9\logback-core-1.2.9.jar;C:\Users\henry\.m2\repository\org\projectlombok\lombok\1.18.4\lombok-1.18.4.jar;C:\Users\henry\.m2\repository\com\alibaba\fastjson\1.2.83\fastjson-1.2.83.jar;C:\Users\henry\.m2\repository\org\ta4j\ta4j-core\0.14\ta4j-core-0.14.jar;C:\Users\henry\.m2\repository\com\tictactec\ta-lib\0.4.0\ta-lib-0.4.0.jar;C:\Users\henry\.m2\repository\com\google\guava\guava\21.0\guava-21.0.jar;D:\arhaiyun\projects\tiger_quant\tquant-storage\target\classes;C:\Users\henry\.m2\repository\org\mybatis\mybatis\3.5.6\mybatis-3.5.6.jar;C:\Users\henry\.m2\repository\mysql\mysql-connector-java\8.0.28\mysql-connector-java-8.0.28.jar;C:\Users\henry\.m2\repository\com\google\protobuf\protobuf-java\3.11.4\protobuf-java-3.11.4.jar;D:\arhaiyun\projects\tiger_quant\tquant-gateway\target\classes;C:\Users\henry\.m2\repository\io\github\tigerbrokers\openapi-java-sdk\2.0.3\openapi-java-sdk-2.0.3.jar;C:\Users\henry\.m2\repository\io\netty\netty-all\4.1.49.Final\netty-all-4.1.49.Final.jar;C:\Users\henry\.m2\repository\com\squareup\okhttp3\okhttp\3.14.2\okhttp-3.14.2.jar;C:\Users\henry\.m2\repository\com\squareup\okio\okio\1.17.2\okio-1.17.2.jar;C:\Users\henry\.m2\repository\io\netty\netty-tcnative-boringssl-static\2.0.34.Final\netty-tcnative-boringssl-static-2.0.34.Final.jar;C:\Users\henry\.m2\repository\com\google\protobuf\protobuf-java-util\3.21.12\protobuf-java-util-3.21.12.jar;C:\Users\henry\.m2\repository\com\google\errorprone\error_prone_annotations\2.5.1\error_prone_annotations-2.5.1.jar;C:\Users\henry\.m2\repository\com\google\j2objc\j2objc-annotations\1.3\j2objc-annotations-1.3.jar;C:\Users\henry\.m2\repository\com\google\code\findbugs\jsr305\3.0.2\jsr305-3.0.2.jar;C:\Users\henry\.m2\repository\com\google\code\gson\gson\2.8.9\gson-2.8.9.jar;C:\Users\henry\.m2\repository\io\github\tigerbrokers\openapi-optionlib\0.8.1\openapi-optionlib-0.8.1.jar;C:\Users\henry\.m2\repository\net\jcip\jcip-annotations\1.0\jcip-annotations-1.0.jar;C:\Users\henry\.m2\repository\tech\tablesaw\tablesaw-core\0.43.1\tablesaw-core-0.43.1.jar;C:\Users\henry\.m2\repository\org\apache\commons\commons-math3\3.6.1\commons-math3-3.6.1.jar;C:\Users\henry\.m2\repository\it\unimi\dsi\fastutil\8.3.0\fastutil-8.3.0.jar;C:\Users\henry\.m2\repository\org\roaringbitmap\RoaringBitmap\0.9.25\RoaringBitmap-0.9.25.jar;C:\Users\henry\.m2\repository\org\roaringbitmap\shims\0.9.25\shims-0.9.25.jar;C:\Users\henry\.m2\repository\com\univocity\univocity-parsers\2.8.4\univocity-parsers-2.8.4.jar;C:\Users\henry\.m2\repository\com\ibm\icu\icu4j\65.1\icu4j-65.1.jar;C:\Users\henry\.m2\repository\io\github\classgraph\classgraph\4.8.60\classgraph-4.8.60.jar;C:\Users\henry\.m2\repository\tech\tablesaw\tablesaw-json\0.43.1\tablesaw-json-0.43.1.jar;C:\Users\henry\.m2\repository\com\fasterxml\jackson\core\jackson-databind\2.13.2.1\jackson-databind-2.13.2.1.jar;C:\Users\henry\.m2\repository\com\fasterxml\jackson\core\jackson-annotations\2.13.2\jackson-annotations-2.13.2.jar;C:\Users\henry\.m2\repository\com\fasterxml\jackson\core\jackson-core\2.13.2\jackson-core-2.13.2.jar;C:\Users\henry\.m2\repository\com\fasterxml\jackson\datatype\jackson-datatype-jsr310\2.13.2\jackson-datatype-jsr310-2.13.2.jar;C:\Users\henry\.m2\repository\com\github\wnameless\json\json-flattener\0.8.1\json-flattener-0.8.1.jar;C:\Users\henry\.m2\repository\com\eclipsesource\minimal-json\minimal-json\0.9.5\minimal-json-0.9.5.jar;C:\Users\henry\.m2\repository\org\apache\commons\commons-text\1.8\commons-text-1.8.jar;C:\Users\henry\.m2\repository\org\apache\commons\commons-lang3\3.9\commons-lang3-3.9.jar;C:\Users\henry\.m2\repository\com\github\wnameless\json\json-base\1.0.0\json-base-1.0.0.jar" com.tquant.algorithm.algo.HsimainAlgoTest
+
+
+Index: 1 交易开始时间：beginTime:2023-05-01 09:30:00 结束时间:2023-05-01 11:45:00
+TigerConfig(tigerId=20151999, account=20221226135452241, apiLogEnable=true, apiLogPath=log/, privateKey=MIICdQIBADANBgkqhkiG9w0BAQEFAASCAl8wggJbAgEAAoGBAI8dYwLi3dhijIe3xTGP8aV3ie1RlnM82hyk9W7AO2D6B2ORQSEXatfyLzYIBTyz61uApU3mH2sJ7OUj4H0IyIdYeSKFwOXgWsMip5nYMfIgskhfsX7zFq8P5ULIhBYRzon1d7dw2CEqld2+vjziuvLOF5BG4PniMKMhh02ZCBK3AgMBAAECgYAXJ/4ZPXP/yxJJ82Yous2ypEDg8U6Snsn70IUVwmzZKBuB9MLBA/T5s+oHqAyQ4du3Fn2ouQ9kVlrKSJ/OG1m2rpVygHM6jhGdkbIqP5Z/HP4afwVgl4adZ5qLo00TM5KIKTWa0rh8Q+106exY6s/nKeroXpuREsJrgMGiaiiXwQJBAMVpY3qBOVBNJDi2ycndKoS3Tn8aqkUroGCFJrUndftgsR8fRrEMn7IeHH+Y3lkp2MZVrldOTvaRzHbt/UWhMlkCQQC5lrif6688OoiG3nddZt6CEioiQg3TTxQixkvU9kzUuLFxrf+Qfl94Cjop95/WUWqGBHV0Qgqotic5M41DyCuPAkAgI+5sTYm1Rzn0ed4UnYuEnAuNqhu6s0WjMUqCB/CvgqiTtpXd0X5Wk4x0QcFBpwyCDgUadcdpYYd2fXzUz0/RAkAg59xsXnl/kFFMuH0pjme9YEMgN94DrW3AjLA9Xj5ZKTYtFdDOadm7ivStJD6u3Vip0niQ2HTTXRivR7iwX/l5AkBR9hDkiE0b4k9HEP+SBImAfz1qeIxvaSDwk/7gJ/ke/8iPWKJQ+oLq9zAKwyKKTrs0yRAz4Ihj14lAnq6OYDeI, serverUrl=null, socketUrl=null, apiCallbackClassName=null, apiCallbackClass=null)
+返回kline数据为空
+
+
+Index: 2 交易开始时间：beginTime:2023-05-02 09:30:00 结束时间:2023-05-02 11:45:00
+返回kline数据:45
+2023-05-02 09:35:59    BUY   20200.0  1   25
+2023-05-02 09:38:59    SELL   20188.0  1   25
+2023-05-02 09:38:59    SELL   20188.0  1   25
+2023-05-02 10:02:59    BUY   19858.0  1   25
+2023-05-02 10:02:59    BUY   19858.0  1   25
+2023-05-02 10:08:59    SELL   19794.0  1   25
+2023-05-02 10:08:59    SELL   19794.0  1   25
+2023-05-02 10:14:59    BUY   19782.0  1   25
+2023-05-02 10:14:59    BUY   19782.0  1   25
+2023-05-02 10:17:59    SELL   19746.0  1   25
+2023-05-02 10:17:59    SELL   19746.0  1   25
+2023-05-02 10:23:59    BUY   19755.0  1   25
+2023-05-02 10:23:59    BUY   19755.0  1   25
+2023-05-02 10:32:59    SELL   19728.0  1   25
+2023-05-02 10:32:59    SELL   19728.0  1   25
+2023-05-02 10:35:57    BUY   19766.0  1   25
+2023-05-02 10:35:57    BUY   19766.0  1   25
+2023-05-02 11:17:59    SELL   19879.0  1   25
+2023-05-02 11:17:59    SELL   19879.0  1   25
+2023-05-02 11:44:59    BUY   19837.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 20, 当日交易成本:500
+当日收益不包含手续费 pnlWithoutFee:15550.0
+当日收益净值 pnl:15050.0
+累计交易记录数 tradeCount:20
+累计交易成本 accumulateFee:500
+累计收益净值 accumulatePnl:15050.0
+
+
+Index: 3 交易开始时间：beginTime:2023-05-03 09:30:00 结束时间:2023-05-03 11:45:00
+返回kline数据:45
+2023-05-03 09:38:59    SELL   19608.0  1   25
+2023-05-03 09:41:59    BUY   19630.0  1   25
+2023-05-03 09:41:59    BUY   19630.0  1   25
+2023-05-03 09:50:59    SELL   19505.0  1   25
+2023-05-03 09:50:59    SELL   19505.0  1   25
+2023-05-03 09:56:59    BUY   19517.0  1   25
+2023-05-03 09:56:59    BUY   19517.0  1   25
+2023-05-03 10:11:58    SELL   19605.0  1   25
+2023-05-03 10:11:58    SELL   19605.0  1   25
+2023-05-03 10:20:58    BUY   19563.0  1   25
+2023-05-03 10:20:58    BUY   19563.0  1   25
+2023-05-03 10:29:59    SELL   19555.0  1   25
+2023-05-03 10:29:59    SELL   19555.0  1   25
+2023-05-03 10:47:59    BUY   19605.0  1   25
+2023-05-03 10:47:59    BUY   19605.0  1   25
+2023-05-03 10:59:59    SELL   19573.0  1   25
+2023-05-03 10:59:59    SELL   19573.0  1   25
+2023-05-03 11:14:59    BUY   19544.0  1   25
+2023-05-03 11:14:59    BUY   19544.0  1   25
+2023-05-03 11:20:59    SELL   19503.0  1   25
+2023-05-03 11:20:59    SELL   19503.0  1   25
+2023-05-03 11:44:57    BUY   19519.0  1   25
+2023-05-03 11:44:57    BUY   19519.0  1   25
+2023-05-03 11:44:57    SELL   19519.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 24, 当日交易成本:600
+当日收益不包含手续费 pnlWithoutFee:-7350.0
+当日收益净值 pnl:-7950.0
+累计交易记录数 tradeCount:44
+累计交易成本 accumulateFee:1100
+累计收益净值 accumulatePnl:7100.0
+
+
+Index: 4 交易开始时间：beginTime:2023-05-04 09:30:00 结束时间:2023-05-04 11:45:00
+返回kline数据:45
+2023-05-04 09:35:59    BUY   19792.0  1   25
+2023-05-04 09:38:59    SELL   19716.0  1   25
+2023-05-04 09:38:59    SELL   19716.0  1   25
+2023-05-04 09:56:59    BUY   19740.0  1   25
+2023-05-04 09:56:59    BUY   19740.0  1   25
+2023-05-04 10:08:59    SELL   19872.0  1   25
+2023-05-04 10:08:59    SELL   19872.0  1   25
+2023-05-04 10:11:59    BUY   19895.0  1   25
+2023-05-04 10:11:59    BUY   19895.0  1   25
+2023-05-04 10:14:59    SELL   19862.0  1   25
+2023-05-04 10:14:59    SELL   19862.0  1   25
+2023-05-04 10:20:59    BUY   19840.0  1   25
+2023-05-04 10:20:59    BUY   19840.0  1   25
+2023-05-04 10:38:57    SELL   19908.0  1   25
+2023-05-04 10:38:57    SELL   19908.0  1   25
+2023-05-04 10:50:58    BUY   19851.0  1   25
+2023-05-04 10:50:58    BUY   19851.0  1   25
+2023-05-04 11:14:57    SELL   19863.0  1   25
+2023-05-04 11:14:57    SELL   19863.0  1   25
+2023-05-04 11:23:59    BUY   19888.0  1   25
+2023-05-04 11:23:59    BUY   19888.0  1   25
+2023-05-04 11:32:59    SELL   19851.0  1   25
+2023-05-04 11:32:59    SELL   19851.0  1   25
+2023-05-04 11:44:59    BUY   19846.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 24, 当日交易成本:600
+当日收益不包含手续费 pnlWithoutFee:3900.0
+当日收益净值 pnl:3300.0
+累计交易记录数 tradeCount:68
+累计交易成本 accumulateFee:1700
+累计收益净值 accumulatePnl:10400.0
+
+
+Index: 5 交易开始时间：beginTime:2023-05-05 09:30:00 结束时间:2023-05-05 11:45:00
+返回kline数据:45
+2023-05-05 09:38:59    BUY   20116.0  1   25
+2023-05-05 09:41:59    SELL   20113.0  1   25
+2023-05-05 09:41:59    SELL   20113.0  1   25
+2023-05-05 09:44:59    BUY   20140.0  1   25
+2023-05-05 09:44:59    BUY   20140.0  1   25
+2023-05-05 09:47:59    SELL   20084.0  1   25
+2023-05-05 09:47:59    SELL   20084.0  1   25
+2023-05-05 09:50:59    BUY   20113.0  1   25
+2023-05-05 09:50:59    BUY   20113.0  1   25
+2023-05-05 09:53:59    SELL   20078.0  1   25
+2023-05-05 09:53:59    SELL   20078.0  1   25
+2023-05-05 09:56:59    BUY   20100.0  1   25
+2023-05-05 09:56:59    BUY   20100.0  1   25
+2023-05-05 10:05:59    SELL   20099.0  1   25
+2023-05-05 10:05:59    SELL   20099.0  1   25
+2023-05-05 10:35:59    BUY   19954.0  1   25
+2023-05-05 10:35:59    BUY   19954.0  1   25
+2023-05-05 11:02:59    SELL   20034.0  1   25
+2023-05-05 11:02:59    SELL   20034.0  1   25
+2023-05-05 11:32:59    BUY   20013.0  1   25
+2023-05-05 11:32:59    BUY   20013.0  1   25
+2023-05-05 11:44:59    SELL   20015.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 22, 当日交易成本:550
+当日收益不包含手续费 pnlWithoutFee:3750.0
+当日收益净值 pnl:3200.0
+累计交易记录数 tradeCount:90
+累计交易成本 accumulateFee:2250
+累计收益净值 accumulatePnl:13600.0
+
+
+Index: 6 交易开始时间：beginTime:2023-05-06 09:30:00 结束时间:2023-05-06 11:45:00
+返回kline数据为空
+
+
+Index: 7 交易开始时间：beginTime:2023-05-07 09:30:00 结束时间:2023-05-07 11:45:00
+返回kline数据为空
+
+
+Index: 8 交易开始时间：beginTime:2023-05-08 09:30:00 结束时间:2023-05-08 11:45:00
+返回kline数据:45
+2023-05-08 09:38:59    BUY   20194.0  1   25
+2023-05-08 09:41:59    SELL   20170.0  1   25
+2023-05-08 09:41:59    SELL   20170.0  1   25
+2023-05-08 09:53:59    BUY   20046.0  1   25
+2023-05-08 09:53:59    BUY   20046.0  1   25
+2023-05-08 09:59:59    SELL   20044.0  1   25
+2023-05-08 09:59:59    SELL   20044.0  1   25
+2023-05-08 10:02:59    BUY   20078.0  1   25
+2023-05-08 10:02:59    BUY   20078.0  1   25
+2023-05-08 10:05:59    SELL   20049.0  1   25
+2023-05-08 10:05:59    SELL   20049.0  1   25
+2023-05-08 10:08:59    BUY   20081.0  1   25
+2023-05-08 10:08:59    BUY   20081.0  1   25
+2023-05-08 10:11:55    SELL   20054.0  1   25
+2023-05-08 10:11:55    SELL   20054.0  1   25
+2023-05-08 10:17:59    BUY   20052.0  1   25
+2023-05-08 10:17:59    BUY   20052.0  1   25
+2023-05-08 10:32:58    SELL   20139.0  1   25
+2023-05-08 10:32:58    SELL   20139.0  1   25
+2023-05-08 10:44:59    BUY   20077.0  1   25
+2023-05-08 10:44:59    BUY   20077.0  1   25
+2023-05-08 10:59:59    SELL   20133.0  1   25
+2023-05-08 10:59:59    SELL   20133.0  1   25
+2023-05-08 11:14:59    BUY   20224.0  1   25
+2023-05-08 11:14:59    BUY   20224.0  1   25
+2023-05-08 11:17:58    SELL   20189.0  1   25
+2023-05-08 11:17:58    SELL   20189.0  1   25
+2023-05-08 11:29:59    BUY   20150.0  1   25
+2023-05-08 11:29:59    BUY   20150.0  1   25
+2023-05-08 11:44:57    SELL   20141.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 30, 当日交易成本:750
+当日收益不包含手续费 pnlWithoutFee:4350.0
+当日收益净值 pnl:3600.0
+累计交易记录数 tradeCount:120
+累计交易成本 accumulateFee:3000
+累计收益净值 accumulatePnl:17200.0
+
+
+Index: 9 交易开始时间：beginTime:2023-05-09 09:30:00 结束时间:2023-05-09 11:45:00
+返回kline数据:45
+2023-05-09 09:35:59    SELL   20157.0  1   25
+2023-05-09 09:38:59    BUY   20186.0  1   25
+2023-05-09 09:38:59    BUY   20186.0  1   25
+2023-05-09 09:41:59    SELL   20163.0  1   25
+2023-05-09 09:41:59    SELL   20163.0  1   25
+2023-05-09 09:53:59    BUY   20159.0  1   25
+2023-05-09 09:53:59    BUY   20159.0  1   25
+2023-05-09 10:05:59    SELL   20151.0  1   25
+2023-05-09 10:05:59    SELL   20151.0  1   25
+2023-05-09 10:11:59    BUY   20177.0  1   25
+2023-05-09 10:11:59    BUY   20177.0  1   25
+2023-05-09 10:29:58    SELL   20233.0  1   25
+2023-05-09 10:29:58    SELL   20233.0  1   25
+2023-05-09 10:53:59    BUY   20168.0  1   25
+2023-05-09 10:53:59    BUY   20168.0  1   25
+2023-05-09 11:17:59    SELL   20146.0  1   25
+2023-05-09 11:17:59    SELL   20146.0  1   25
+2023-05-09 11:44:58    BUY   20155.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 18, 当日交易成本:450
+当日收益不包含手续费 pnlWithoutFee:400.0
+当日收益净值 pnl:-50.0
+累计交易记录数 tradeCount:138
+累计交易成本 accumulateFee:3450
+累计收益净值 accumulatePnl:17150.0
+
+
+Index: 10 交易开始时间：beginTime:2023-05-10 09:30:00 结束时间:2023-05-10 11:45:00
+返回kline数据:45
+2023-05-10 09:35:59    SELL   19704.0  1   25
+2023-05-10 09:38:59    BUY   19728.0  1   25
+2023-05-10 09:38:59    BUY   19728.0  1   25
+2023-05-10 09:41:59    SELL   19693.0  1   25
+2023-05-10 09:41:59    SELL   19693.0  1   25
+2023-05-10 09:47:59    BUY   19699.0  1   25
+2023-05-10 09:47:59    BUY   19699.0  1   25
+2023-05-10 09:56:59    SELL   19655.0  1   25
+2023-05-10 09:56:59    SELL   19655.0  1   25
+2023-05-10 10:02:58    BUY   19717.0  1   25
+2023-05-10 10:02:58    BUY   19717.0  1   25
+2023-05-10 10:08:59    SELL   19725.0  1   25
+2023-05-10 10:08:59    SELL   19725.0  1   25
+2023-05-10 10:17:59    BUY   19677.0  1   25
+2023-05-10 10:17:59    BUY   19677.0  1   25
+2023-05-10 10:23:59    SELL   19654.0  1   25
+2023-05-10 10:23:59    SELL   19654.0  1   25
+2023-05-10 10:26:58    BUY   19690.0  1   25
+2023-05-10 10:26:58    BUY   19690.0  1   25
+2023-05-10 10:35:59    SELL   19681.0  1   25
+2023-05-10 10:35:59    SELL   19681.0  1   25
+2023-05-10 10:41:59    BUY   19697.0  1   25
+2023-05-10 10:41:59    BUY   19697.0  1   25
+2023-05-10 10:47:59    SELL   19646.0  1   25
+2023-05-10 10:47:59    SELL   19646.0  1   25
+2023-05-10 11:02:59    BUY   19688.0  1   25
+2023-05-10 11:02:59    BUY   19688.0  1   25
+2023-05-10 11:23:56    SELL   19687.0  1   25
+2023-05-10 11:23:56    SELL   19687.0  1   25
+2023-05-10 11:44:54    BUY   19675.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 30, 当日交易成本:750
+当日收益不包含手续费 pnlWithoutFee:-14050.0
+当日收益净值 pnl:-14800.0
+累计交易记录数 tradeCount:168
+累计交易成本 accumulateFee:4200
+累计收益净值 accumulatePnl:2350.0
+
+
+Index: 11 交易开始时间：beginTime:2023-05-11 09:30:00 结束时间:2023-05-11 11:45:00
+返回kline数据:45
+2023-05-11 09:35:59    BUY   19789.0  1   25
+2023-05-11 09:41:59    SELL   19779.0  1   25
+2023-05-11 09:41:59    SELL   19779.0  1   25
+2023-05-11 09:47:59    BUY   19784.0  1   25
+2023-05-11 09:47:59    BUY   19784.0  1   25
+2023-05-11 09:53:59    SELL   19756.0  1   25
+2023-05-11 09:53:59    SELL   19756.0  1   25
+2023-05-11 09:56:59    BUY   19800.0  1   25
+2023-05-11 09:56:59    BUY   19800.0  1   25
+2023-05-11 09:59:59    SELL   19747.0  1   25
+2023-05-11 09:59:59    SELL   19747.0  1   25
+2023-05-11 10:08:59    BUY   19742.0  1   25
+2023-05-11 10:08:59    BUY   19742.0  1   25
+2023-05-11 10:17:59    SELL   19767.0  1   25
+2023-05-11 10:17:59    SELL   19767.0  1   25
+2023-05-11 11:05:59    BUY   19742.0  1   25
+2023-05-11 11:05:59    BUY   19742.0  1   25
+2023-05-11 11:11:59    SELL   19719.0  1   25
+2023-05-11 11:11:59    SELL   19719.0  1   25
+2023-05-11 11:44:59    BUY   19688.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 20, 当日交易成本:500
+当日收益不包含手续费 pnlWithoutFee:-3850.0
+当日收益净值 pnl:-4350.0
+累计交易记录数 tradeCount:188
+累计交易成本 accumulateFee:4700
+累计收益净值 accumulatePnl:-2000.0
+
+
+Index: 12 交易开始时间：beginTime:2023-05-12 09:30:00 结束时间:2023-05-12 11:45:00
+返回kline数据:45
+2023-05-12 09:50:59    BUY   19771.0  1   25
+2023-05-12 09:53:58    SELL   19751.0  1   25
+2023-05-12 09:53:58    SELL   19751.0  1   25
+2023-05-12 09:59:59    BUY   19813.0  1   25
+2023-05-12 09:59:59    BUY   19813.0  1   25
+2023-05-12 10:02:59    SELL   19787.0  1   25
+2023-05-12 10:02:59    SELL   19787.0  1   25
+2023-05-12 10:14:59    BUY   19743.0  1   25
+2023-05-12 10:14:59    BUY   19743.0  1   25
+2023-05-12 10:20:59    SELL   19713.0  1   25
+2023-05-12 10:20:59    SELL   19713.0  1   25
+2023-05-12 10:41:59    BUY   19614.0  1   25
+2023-05-12 10:41:59    BUY   19614.0  1   25
+2023-05-12 11:02:59    SELL   19612.0  1   25
+2023-05-12 11:02:59    SELL   19612.0  1   25
+2023-05-12 11:11:59    BUY   19628.0  1   25
+2023-05-12 11:11:59    BUY   19628.0  1   25
+2023-05-12 11:17:57    SELL   19625.0  1   25
+2023-05-12 11:17:57    SELL   19625.0  1   25
+2023-05-12 11:20:59    BUY   19649.0  1   25
+2023-05-12 11:20:59    BUY   19649.0  1   25
+2023-05-12 11:44:58    SELL   19673.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 22, 当日交易成本:550
+当日收益不包含手续费 pnlWithoutFee:-800.0
+当日收益净值 pnl:-1350.0
+累计交易记录数 tradeCount:210
+累计交易成本 accumulateFee:5250
+累计收益净值 accumulatePnl:-3350.0
+
+
+Index: 13 交易开始时间：beginTime:2023-05-13 09:30:00 结束时间:2023-05-13 11:45:00
+返回kline数据为空
+
+
+Index: 14 交易开始时间：beginTime:2023-05-14 09:30:00 结束时间:2023-05-14 11:45:00
+返回kline数据为空
+
+
+Index: 15 交易开始时间：beginTime:2023-05-15 09:30:00 结束时间:2023-05-15 11:45:00
+返回kline数据:45
+2023-05-15 09:35:58    SELL   19474.0  1   25
+2023-05-15 09:38:59    BUY   19554.0  1   25
+2023-05-15 09:38:59    BUY   19554.0  1   25
+2023-05-15 09:47:59    SELL   19588.0  1   25
+2023-05-15 09:47:59    SELL   19588.0  1   25
+2023-05-15 09:53:59    BUY   19612.0  1   25
+2023-05-15 09:53:59    BUY   19612.0  1   25
+2023-05-15 09:59:59    SELL   19645.0  1   25
+2023-05-15 09:59:59    SELL   19645.0  1   25
+2023-05-15 10:20:59    BUY   19581.0  1   25
+2023-05-15 10:20:59    BUY   19581.0  1   25
+2023-05-15 10:23:59    SELL   19557.0  1   25
+2023-05-15 10:23:59    SELL   19557.0  1   25
+2023-05-15 10:38:59    BUY   19589.0  1   25
+2023-05-15 10:38:59    BUY   19589.0  1   25
+2023-05-15 10:44:59    SELL   19582.0  1   25
+2023-05-15 10:44:59    SELL   19582.0  1   25
+2023-05-15 10:50:55    BUY   19591.0  1   25
+2023-05-15 10:50:55    BUY   19591.0  1   25
+2023-05-15 10:56:59    SELL   19565.0  1   25
+2023-05-15 10:56:59    SELL   19565.0  1   25
+2023-05-15 11:26:59    BUY   19600.0  1   25
+2023-05-15 11:26:59    BUY   19600.0  1   25
+2023-05-15 11:38:58    SELL   19620.0  1   25
+2023-05-15 11:38:58    SELL   19620.0  1   25
+2023-05-15 11:44:56    BUY   19616.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 26, 当日交易成本:650
+当日收益不包含手续费 pnlWithoutFee:-4100.0
+当日收益净值 pnl:-4750.0
+累计交易记录数 tradeCount:236
+累计交易成本 accumulateFee:5900
+累计收益净值 accumulatePnl:-8100.0
+
+
+Index: 16 交易开始时间：beginTime:2023-05-16 09:30:00 结束时间:2023-05-16 11:45:00
+返回kline数据:45
+2023-05-16 09:41:59    SELL   20060.0  1   25
+2023-05-16 10:17:59    BUY   20033.0  1   25
+2023-05-16 10:17:59    BUY   20033.0  1   25
+2023-05-16 11:44:59    SELL   20018.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 4, 当日交易成本:100
+当日收益不包含手续费 pnlWithoutFee:600.0
+当日收益净值 pnl:500.0
+累计交易记录数 tradeCount:240
+累计交易成本 accumulateFee:6000
+累计收益净值 accumulatePnl:-7600.0
+
+
+Index: 17 交易开始时间：beginTime:2023-05-17 09:30:00 结束时间:2023-05-17 11:45:00
+返回kline数据:45
+2023-05-17 09:35:59    SELL   19803.0  1   25
+2023-05-17 09:41:59    BUY   19800.0  1   25
+2023-05-17 09:41:59    BUY   19800.0  1   25
+2023-05-17 10:08:59    SELL   19907.0  1   25
+2023-05-17 10:08:59    SELL   19907.0  1   25
+2023-05-17 10:23:57    BUY   19895.0  1   25
+2023-05-17 10:23:57    BUY   19895.0  1   25
+2023-05-17 10:56:59    SELL   19930.0  1   25
+2023-05-17 10:56:59    SELL   19930.0  1   25
+2023-05-17 11:14:58    BUY   19853.0  1   25
+2023-05-17 11:14:58    BUY   19853.0  1   25
+2023-05-17 11:44:59    SELL   19827.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 12, 当日交易成本:300
+当日收益不包含手续费 pnlWithoutFee:10400.0
+当日收益净值 pnl:10100.0
+累计交易记录数 tradeCount:252
+累计交易成本 accumulateFee:6300
+累计收益净值 accumulatePnl:2500.0
+
+
+Index: 18 交易开始时间：beginTime:2023-05-18 09:30:00 结束时间:2023-05-18 11:45:00
+返回kline数据:45
+2023-05-18 09:35:59    BUY   19652.0  1   25
+2023-05-18 09:47:59    SELL   19599.0  1   25
+2023-05-18 09:47:59    SELL   19599.0  1   25
+2023-05-18 09:53:59    BUY   19655.0  1   25
+2023-05-18 09:53:59    BUY   19655.0  1   25
+2023-05-18 09:59:59    SELL   19653.0  1   25
+2023-05-18 09:59:59    SELL   19653.0  1   25
+2023-05-18 10:02:59    BUY   19684.0  1   25
+2023-05-18 10:02:59    BUY   19684.0  1   25
+2023-05-18 10:08:59    SELL   19737.0  1   25
+2023-05-18 10:08:59    SELL   19737.0  1   25
+2023-05-18 10:14:59    BUY   19784.0  1   25
+2023-05-18 10:14:59    BUY   19784.0  1   25
+2023-05-18 10:32:59    SELL   19782.0  1   25
+2023-05-18 10:32:59    SELL   19782.0  1   25
+2023-05-18 10:44:59    BUY   19731.0  1   25
+2023-05-18 10:44:59    BUY   19731.0  1   25
+2023-05-18 10:56:59    SELL   19796.0  1   25
+2023-05-18 10:56:59    SELL   19796.0  1   25
+2023-05-18 11:44:59    BUY   19741.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 20, 当日交易成本:500
+当日收益不包含手续费 pnlWithoutFee:1650.0
+当日收益净值 pnl:1150.0
+累计交易记录数 tradeCount:272
+累计交易成本 accumulateFee:6800
+累计收益净值 accumulatePnl:3650.0
+
+
+Index: 19 交易开始时间：beginTime:2023-05-19 09:30:00 结束时间:2023-05-19 11:45:00
+返回kline数据:45
+2023-05-19 09:35:59    BUY   19334.0  1   25
+2023-05-19 09:50:59    SELL   19369.0  1   25
+2023-05-19 09:50:59    SELL   19369.0  1   25
+2023-05-19 09:53:59    BUY   19379.0  1   25
+2023-05-19 09:53:59    BUY   19379.0  1   25
+2023-05-19 10:35:59    SELL   19440.0  1   25
+2023-05-19 10:35:59    SELL   19440.0  1   25
+2023-05-19 10:44:59    BUY   19433.0  1   25
+2023-05-19 10:44:59    BUY   19433.0  1   25
+2023-05-19 10:47:59    SELL   19404.0  1   25
+2023-05-19 10:47:59    SELL   19404.0  1   25
+2023-05-19 10:50:59    BUY   19429.0  1   25
+2023-05-19 10:50:59    BUY   19429.0  1   25
+2023-05-19 11:02:59    SELL   19484.0  1   25
+2023-05-19 11:02:59    SELL   19484.0  1   25
+2023-05-19 11:17:59    BUY   19517.0  1   25
+2023-05-19 11:17:59    BUY   19517.0  1   25
+2023-05-19 11:35:58    SELL   19510.0  1   25
+2023-05-19 11:35:58    SELL   19510.0  1   25
+2023-05-19 11:44:57    BUY   19489.0  1   25
+2023-05-19 11:44:57    BUY   19489.0  1   25
+2023-05-19 11:44:57    SELL   19489.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 22, 当日交易成本:550
+当日收益不包含手续费 pnlWithoutFee:3750.0
+当日收益净值 pnl:3200.0
+累计交易记录数 tradeCount:294
+累计交易成本 accumulateFee:7350
+累计收益净值 accumulatePnl:6850.0
+
+
+Index: 20 交易开始时间：beginTime:2023-05-20 09:30:00 结束时间:2023-05-20 11:45:00
+返回kline数据为空
+
+
+Index: 21 交易开始时间：beginTime:2023-05-21 09:30:00 结束时间:2023-05-21 11:45:00
+返回kline数据为空
+
+
+Index: 22 交易开始时间：beginTime:2023-05-22 09:30:00 结束时间:2023-05-22 11:45:00
+返回kline数据:45
+2023-05-22 09:44:59    BUY   19441.0  1   25
+2023-05-22 09:53:59    SELL   19464.0  1   25
+2023-05-22 09:53:59    SELL   19464.0  1   25
+2023-05-22 09:56:59    BUY   19490.0  1   25
+2023-05-22 09:56:59    BUY   19490.0  1   25
+2023-05-22 10:08:59    SELL   19485.0  1   25
+2023-05-22 10:08:59    SELL   19485.0  1   25
+2023-05-22 10:11:59    BUY   19508.0  1   25
+2023-05-22 10:11:59    BUY   19508.0  1   25
+2023-05-22 10:20:59    SELL   19656.0  1   25
+2023-05-22 10:20:59    SELL   19656.0  1   25
+2023-05-22 10:23:59    BUY   19696.0  1   25
+2023-05-22 10:23:59    BUY   19696.0  1   25
+2023-05-22 10:32:59    SELL   19721.0  1   25
+2023-05-22 10:32:59    SELL   19721.0  1   25
+2023-05-22 10:38:59    BUY   19720.0  1   25
+2023-05-22 10:38:59    BUY   19720.0  1   25
+2023-05-22 10:47:59    SELL   19706.0  1   25
+2023-05-22 10:47:59    SELL   19706.0  1   25
+2023-05-22 11:14:59    BUY   19671.0  1   25
+2023-05-22 11:14:59    BUY   19671.0  1   25
+2023-05-22 11:44:56    SELL   19685.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 22, 当日交易成本:550
+当日收益不包含手续费 pnlWithoutFee:6900.0
+当日收益净值 pnl:6350.0
+累计交易记录数 tradeCount:316
+累计交易成本 accumulateFee:7900
+累计收益净值 accumulatePnl:13200.0
+
+
+Index: 23 交易开始时间：beginTime:2023-05-23 09:30:00 结束时间:2023-05-23 11:45:00
+返回kline数据:45
+2023-05-23 09:35:59    SELL   19692.0  1   25
+2023-05-23 09:38:59    BUY   19730.0  1   25
+2023-05-23 09:38:59    BUY   19730.0  1   25
+2023-05-23 09:41:59    SELL   19702.0  1   25
+2023-05-23 09:41:59    SELL   19702.0  1   25
+2023-05-23 09:47:59    BUY   19753.0  1   25
+2023-05-23 09:47:59    BUY   19753.0  1   25
+2023-05-23 09:56:59    SELL   19680.0  1   25
+2023-05-23 09:56:59    SELL   19680.0  1   25
+2023-05-23 10:08:59    BUY   19692.0  1   25
+2023-05-23 10:08:59    BUY   19692.0  1   25
+2023-05-23 10:17:59    SELL   19635.0  1   25
+2023-05-23 10:17:59    SELL   19635.0  1   25
+2023-05-23 10:23:59    BUY   19634.0  1   25
+2023-05-23 10:23:59    BUY   19634.0  1   25
+2023-05-23 10:59:59    SELL   19679.0  1   25
+2023-05-23 10:59:59    SELL   19679.0  1   25
+2023-05-23 11:32:59    BUY   19614.0  1   25
+2023-05-23 11:32:59    BUY   19614.0  1   25
+2023-05-23 11:44:58    SELL   19595.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 20, 当日交易成本:500
+当日收益不包含手续费 pnlWithoutFee:-8350.0
+当日收益净值 pnl:-8850.0
+累计交易记录数 tradeCount:336
+累计交易成本 accumulateFee:8400
+累计收益净值 accumulatePnl:4350.0
+
+
+Index: 24 交易开始时间：beginTime:2023-05-24 09:30:00 结束时间:2023-05-24 11:45:00
+返回kline数据:45
+2023-05-24 09:35:59    SELL   19201.0  1   25
+2023-05-24 09:38:59    BUY   19251.0  1   25
+2023-05-24 09:38:59    BUY   19251.0  1   25
+2023-05-24 09:44:59    SELL   19266.0  1   25
+2023-05-24 09:44:59    SELL   19266.0  1   25
+2023-05-24 09:50:59    BUY   19288.0  1   25
+2023-05-24 09:50:59    BUY   19288.0  1   25
+2023-05-24 09:53:59    SELL   19245.0  1   25
+2023-05-24 09:53:59    SELL   19245.0  1   25
+2023-05-24 10:32:59    BUY   19188.0  1   25
+2023-05-24 10:32:59    BUY   19188.0  1   25
+2023-05-24 10:41:59    SELL   19167.0  1   25
+2023-05-24 10:41:59    SELL   19167.0  1   25
+2023-05-24 10:50:59    BUY   19195.0  1   25
+2023-05-24 10:50:59    BUY   19195.0  1   25
+2023-05-24 11:02:58    SELL   19169.0  1   25
+2023-05-24 11:02:58    SELL   19169.0  1   25
+2023-05-24 11:05:59    BUY   19188.0  1   25
+2023-05-24 11:05:59    BUY   19188.0  1   25
+2023-05-24 11:44:59    SELL   19235.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 20, 当日交易成本:500
+当日收益不包含手续费 pnlWithoutFee:-4500.0
+当日收益净值 pnl:-5000.0
+累计交易记录数 tradeCount:356
+累计交易成本 accumulateFee:8900
+累计收益净值 accumulatePnl:-650.0
+
+
+Index: 25 交易开始时间：beginTime:2023-05-25 09:30:00 结束时间:2023-05-25 11:45:00
+返回kline数据:45
+2023-05-25 09:38:59    SELL   18866.0  1   25
+2023-05-25 09:47:59    BUY   18877.0  1   25
+2023-05-25 09:47:59    BUY   18877.0  1   25
+2023-05-25 09:53:59    SELL   18821.0  1   25
+2023-05-25 09:53:59    SELL   18821.0  1   25
+2023-05-25 10:02:59    BUY   18820.0  1   25
+2023-05-25 10:02:59    BUY   18820.0  1   25
+2023-05-25 10:08:59    SELL   18801.0  1   25
+2023-05-25 10:08:59    SELL   18801.0  1   25
+2023-05-25 10:23:59    BUY   18804.0  1   25
+2023-05-25 10:23:59    BUY   18804.0  1   25
+2023-05-25 10:38:59    SELL   18765.0  1   25
+2023-05-25 10:38:59    SELL   18765.0  1   25
+2023-05-25 10:56:58    BUY   18752.0  1   25
+2023-05-25 10:56:58    BUY   18752.0  1   25
+2023-05-25 10:59:59    SELL   18725.0  1   25
+2023-05-25 10:59:59    SELL   18725.0  1   25
+2023-05-25 11:44:58    BUY   18713.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 18, 当日交易成本:450
+当日收益不包含手续费 pnlWithoutFee:-6450.0
+当日收益净值 pnl:-6900.0
+累计交易记录数 tradeCount:374
+累计交易成本 accumulateFee:9350
+累计收益净值 accumulatePnl:-7550.0
+
+
+Index: 26 交易开始时间：beginTime:2023-05-26 09:30:00 结束时间:2023-05-26 11:45:00
+返回kline数据为空
+
+
+Index: 27 交易开始时间：beginTime:2023-05-27 09:30:00 结束时间:2023-05-27 11:45:00
+返回kline数据为空
+
+
+Index: 28 交易开始时间：beginTime:2023-05-28 09:30:00 结束时间:2023-05-28 11:45:00
+返回kline数据为空
+
+
+Index: 29 交易开始时间：beginTime:2023-05-29 09:30:00 结束时间:2023-05-29 11:45:00
+返回kline数据:45
+2023-05-29 09:41:59    SELL   18729.0  1   25
+2023-05-29 09:47:59    BUY   18718.0  1   25
+2023-05-29 09:47:59    BUY   18718.0  1   25
+2023-05-29 10:11:59    SELL   18777.0  1   25
+2023-05-29 10:11:59    SELL   18777.0  1   25
+2023-05-29 10:20:57    BUY   18777.0  1   25
+2023-05-29 10:20:57    BUY   18777.0  1   25
+2023-05-29 10:23:59    SELL   18751.0  1   25
+2023-05-29 10:23:59    SELL   18751.0  1   25
+2023-05-29 11:05:59    BUY   18709.0  1   25
+2023-05-29 11:05:59    BUY   18709.0  1   25
+2023-05-29 11:23:59    SELL   18683.0  1   25
+2023-05-29 11:23:59    SELL   18683.0  1   25
+2023-05-29 11:44:54    BUY   18683.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 14, 当日交易成本:350
+当日收益不包含手续费 pnlWithoutFee:3000.0
+当日收益净值 pnl:2650.0
+累计交易记录数 tradeCount:388
+累计交易成本 accumulateFee:9700
+累计收益净值 accumulatePnl:-4900.0
+
+
+Index: 30 交易开始时间：beginTime:2023-05-30 09:30:00 结束时间:2023-05-30 11:45:00
+返回kline数据:45
+2023-05-30 09:35:59    BUY   18589.0  1   25
+2023-05-30 09:38:59    SELL   18555.0  1   25
+2023-05-30 09:38:59    SELL   18555.0  1   25
+2023-05-30 09:41:59    BUY   18568.0  1   25
+2023-05-30 09:41:59    BUY   18568.0  1   25
+2023-05-30 09:50:59    SELL   18565.0  1   25
+2023-05-30 09:50:59    SELL   18565.0  1   25
+2023-05-30 09:59:59    BUY   18552.0  1   25
+2023-05-30 09:59:59    BUY   18552.0  1   25
+2023-05-30 10:05:59    SELL   18532.0  1   25
+2023-05-30 10:05:59    SELL   18532.0  1   25
+2023-05-30 10:26:59    BUY   18443.0  1   25
+2023-05-30 10:26:59    BUY   18443.0  1   25
+2023-05-30 10:38:59    SELL   18379.0  1   25
+2023-05-30 10:38:59    SELL   18379.0  1   25
+2023-05-30 10:41:59    BUY   18387.0  1   25
+2023-05-30 10:41:59    BUY   18387.0  1   25
+2023-05-30 10:53:59    SELL   18422.0  1   25
+2023-05-30 10:53:59    SELL   18422.0  1   25
+2023-05-30 11:11:59    BUY   18423.0  1   25
+2023-05-30 11:11:59    BUY   18423.0  1   25
+2023-05-30 11:23:59    SELL   18368.0  1   25
+2023-05-30 11:23:59    SELL   18368.0  1   25
+2023-05-30 11:44:59    BUY   18333.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 24, 当日交易成本:600
+当日收益不包含手续费 pnlWithoutFee:-1300.0
+当日收益净值 pnl:-1900.0
+累计交易记录数 tradeCount:412
+累计交易成本 accumulateFee:10300
+累计收益净值 accumulatePnl:-6800.0
+
+
+Index: 31 交易开始时间：beginTime:2023-05-31 09:30:00 结束时间:2023-05-31 11:45:00
+返回kline数据:45
+2023-05-31 09:41:59    BUY   18270.0  1   25
+2023-05-31 09:44:59    SELL   18210.0  1   25
+2023-05-31 09:44:59    SELL   18210.0  1   25
+2023-05-31 09:53:59    BUY   18269.0  1   25
+2023-05-31 09:53:59    BUY   18269.0  1   25
+2023-05-31 09:56:59    SELL   18224.0  1   25
+2023-05-31 09:56:59    SELL   18224.0  1   25
+2023-05-31 10:29:59    BUY   18141.0  1   25
+2023-05-31 10:29:59    BUY   18141.0  1   25
+2023-05-31 10:41:59    SELL   18128.0  1   25
+2023-05-31 10:41:59    SELL   18128.0  1   25
+2023-05-31 10:56:59    BUY   18122.0  1   25
+2023-05-31 10:56:59    BUY   18122.0  1   25
+2023-05-31 11:05:59    SELL   18086.0  1   25
+2023-05-31 11:05:59    SELL   18086.0  1   25
+2023-05-31 11:41:59    BUY   18098.0  1   25
+2023-05-31 11:41:59    BUY   18098.0  1   25
+2023-05-31 11:44:58    SELL   18111.0  1   25
+当前持仓 longPosition: 0, shortPosition:0
+当日交易记录数: 18, 当日交易成本:450
+当日收益不包含手续费 pnlWithoutFee:-6150.0
+当日收益净值 pnl:-6600.0
+累计交易记录数 tradeCount:430
+累计交易成本 accumulateFee:10750
+累计收益净值 accumulatePnl:-13400.0
+
+Process finished with exit code 0
