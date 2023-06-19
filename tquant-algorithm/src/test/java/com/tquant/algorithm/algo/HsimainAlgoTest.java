@@ -32,7 +32,7 @@ public class HsimainAlgoTest {
 
     private static final String SYMBOL = "HSImain";
     private static final int ACCUMULATE_CNT = 2;
-    private static final int SHARE_PER_TRADE = 2;
+    private static final int SHARE_PER_TRADE = 1;
     private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
 
     // 每点交易盈亏 HKD
@@ -48,10 +48,10 @@ public class HsimainAlgoTest {
     private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
 
     private static final Long SLEEP_MILL_SEC = 1500L;
-    private static final String year = "2022";
+    private static final String year = "2023";
     private static final String month = "06";
     private static final String dayBeginTime = "09:30";
-    private static final String dayEndTime = "14:45";
+    private static final String dayEndTime = "11:45";
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -95,7 +95,7 @@ public class HsimainAlgoTest {
 
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2023" + month + "01", "2023" + month + "31", dayBeginTime, dayEndTime);
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0101", year + "1231", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0601", year + "0631", dayBeginTime, dayEndTime);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
@@ -189,7 +189,8 @@ public class HsimainAlgoTest {
                         stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
                     } else if (longPosition == 0 && shortPosition == SHARE_PER_TRADE) { // 当前持有一单位空头持仓
                         // 结合止损价设定实际交易价格
-                        if (closePrice.compareTo(stopLosePrice) > 0) {
+//                        if (closePrice.compareTo(stopLosePrice) > 0) {
+                        if (klineItem.getHigh().compareTo(stopLosePrice) > 0) {
                             System.out.println(tradeTime + " 触发止损价格：" + stopLosePrice);
                             transactionPrice = stopLosePrice;
 //                            transactionPrice = closePrice;
@@ -229,7 +230,8 @@ public class HsimainAlgoTest {
                         stopLosePrice = closePrice.add(STOP_LOSE_POINT);
                     } else if (longPosition == SHARE_PER_TRADE && shortPosition == 0) {
                         // 结合止损价设定实际交易价格
-                        if (closePrice.compareTo(stopLosePrice) < 0) {
+//                        if (closePrice.compareTo(stopLosePrice) < 0) {
+                        if (klineItem.getLow().compareTo(stopLosePrice) < 0) {
                             System.out.println(tradeTime + " 触发止损价格：" + stopLosePrice);
                             transactionPrice = stopLosePrice;
 //                            transactionPrice = closePrice;
