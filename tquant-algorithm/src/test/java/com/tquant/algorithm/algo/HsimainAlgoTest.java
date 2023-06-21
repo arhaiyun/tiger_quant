@@ -40,7 +40,7 @@ public class HsimainAlgoTest {
     // 1单位买卖手续费 HKD
     private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
     // 止损点数
-    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(60);
+    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(45);
     // k线实体变化点数
     private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(20);
     // 最高/低点到k线close价格变化点数
@@ -95,8 +95,8 @@ public class HsimainAlgoTest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
         int counter = 0;
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2023" + month + "01", "2023" + month + "31", dayBeginTime, dayEndTime);
-//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0601", year + "0620", dayBeginTime, dayEndTime);
+//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2023" + month + "01", "2023" + month + "31", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0601", year + "0631", dayBeginTime, dayEndTime);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
@@ -138,9 +138,9 @@ public class HsimainAlgoTest {
             List<TradeRecord> tradeRecords = new ArrayList<>();
 
             // 获取日内1-3-5分钟级别k线数据
-            // List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 400);
+            List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
             List<FutureKlineItem> kLineItems3Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 400);
+            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
 
             if (kLineItems3Min.size() == 0) {
                 System.out.println("返回kline数据为空");
