@@ -18,10 +18,15 @@ import static com.tquant.core.util.QuantConstants.TIGER_CONFIG_PATH_PROP;
  */
 public class TigerConfigLoader {
 
+//    private static final String algoConfigPath
+//            = "D:\\arhaiyun\\projects\\tiger_quant\\algo_setting.json";
+//    private static final String gatewayConfigPath
+//            = "D:\\arhaiyun\\projects\\tiger_quant\\gateway_setting.json";
+
     private static final String algoConfigPath
-            = "D:\\arhaiyun\\projects\\tiger_quant\\algo_setting.json";
+            = "/Users/arhaiyun/github/tiger_quant/algo_setting.json";
     private static final String gatewayConfigPath
-            = "D:\\arhaiyun\\projects\\tiger_quant\\gateway_setting.json";
+            = "/Users/arhaiyun/github/tiger_quant/gateway_setting.json";
 
     private static void initProperties(String algoConfigPath, String gatewayConfigPath) {
         System.setProperty(ALGO_CONFIG_PATH_PROP, algoConfigPath);
