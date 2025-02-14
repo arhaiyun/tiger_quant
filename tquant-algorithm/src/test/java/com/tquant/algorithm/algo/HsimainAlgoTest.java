@@ -26,7 +26,7 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  * Description:
  *
  * @author arhaiyun
- * @date 2023/05/20
+ * @date 2024/05/20
  */
 public class HsimainAlgoTest {
 
@@ -48,7 +48,7 @@ public class HsimainAlgoTest {
     private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
 
     private static final Long SLEEP_MILL_SEC = 1500L;
-    private static final String year = "2023";
+    private static final String year = "2024";
     private static final String month = "05";
     private static final String dayBeginTime = "09:30";
     private static final String dayEndTime = "11:45";
@@ -69,7 +69,7 @@ public class HsimainAlgoTest {
 
     public static void main(String[] args) throws InterruptedException {
         // testMinDailyStrategy();
-        // System.out.println(TradeTimeUtils.getTradeTimeList("20230101", "20230601", "09:30", "11:30"));
+        // System.out.println(TradeTimeUtils.getTradeTimeList("20240101", "20240601", "09:30", "11:30"));
         System.out.println("Stop Lose Point:" + STOP_LOSE_POINT);
         mixedMinDailyStrategy();
 //        averageTrueRangeStat();
@@ -95,8 +95,8 @@ public class HsimainAlgoTest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
         int counter = 0;
-//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2023" + month + "01", "2023" + month + "31", dayBeginTime, dayEndTime);
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0601", year + "0631", dayBeginTime, dayEndTime);
+//        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0901", year + "1001", dayBeginTime, dayEndTime);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
@@ -417,7 +417,7 @@ public class HsimainAlgoTest {
         BigDecimal sumRange = BigDecimal.ZERO;
         int count = 0;
 
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230601", "20230610", "09:15", "11:15");
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20240601", "20240610", "09:15", "11:15");
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             BigDecimal range = BigDecimal.ZERO;
             counter++;
@@ -450,8 +450,8 @@ public class HsimainAlgoTest {
 
     /**
      * 1.通过老虎证券的 Java open API 获取HSImain股指期货每分钟k线数据，获取时间段通过参数指定如
-     * String beginTime = "2023-05-30 22:48:00";
-     * String endTime = "2023-05-30 23:00:00";
+     * String beginTime = "2024-05-30 22:48:00";
+     * String endTime = "2024-05-30 23:00:00";
      * <p>
      * 2.如果当前x分钟收涨
      * a.当前没有持仓则以收盘价买入1单位
@@ -477,7 +477,7 @@ public class HsimainAlgoTest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
         int counter = 0;
 
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20230501", "20230601", "09:30", "11:00");
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("20240501", "20240601", "09:30", "11:00");
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
