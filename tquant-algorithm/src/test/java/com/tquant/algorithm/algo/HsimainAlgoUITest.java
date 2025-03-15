@@ -4,21 +4,14 @@ import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineItem;
 import com.tigerbrokers.stock.openapi.client.struct.enums.FutureKType;
-import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
-import org.ta4j.core.Trade;
+import com.tquant.algorithm.constants.HsimainAlgoConstants;
 
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
 
@@ -30,11 +23,12 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  */
 public class HsimainAlgoUITest {
 
-    private static final String SYMBOL = "HSImain";
-    private static final String year = "2025";
-    private static final String month = "03";
-    private static final String dayBeginTime = "09:30";
-    private static final String dayEndTime = "11:45";
+    // 使用常量类中定义的参数
+    private static final String SYMBOL = HsimainAlgoConstants.SYMBOL;
+    private static final String year = HsimainAlgoConstants.YEAR;
+    private static final String month = HsimainAlgoConstants.MONTH;
+    private static final String dayBeginTime = HsimainAlgoConstants.DAY_BEGIN_TIME;
+    private static final String dayEndTime = HsimainAlgoConstants.DAY_END_TIME;
 
     public static void main(String[] args) throws InterruptedException {
          drawKineCanvas();
@@ -51,7 +45,7 @@ public class HsimainAlgoUITest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
         int counter = 0;
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2025" + month + "01", "2025" + month + "31", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2025" + month + "01", "2025" + month + "15", dayBeginTime, dayEndTime);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();

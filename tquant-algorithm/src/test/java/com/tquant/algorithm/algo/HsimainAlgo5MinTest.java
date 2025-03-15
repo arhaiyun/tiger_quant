@@ -8,6 +8,7 @@ import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
+import com.tquant.algorithm.constants.HsimainAlgoConstants;
 import org.ta4j.core.Trade;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
+import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 
 /**
  * Description:
@@ -30,28 +32,8 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  */
 public class HsimainAlgo5MinTest {
 
-    private static final String SYMBOL = "HSImain";
-    private static final int ACCUMULATE_CNT = 2;
-    private static final int SHARE_PER_TRADE = 1;
-    private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
-
-    // 每点交易盈亏 HKD
-    private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);
-    // 1单位买卖手续费 HKD
-    private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
-    // 止损点数
-    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(60);
-    // k线实体变化点数
-    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(20);
-    // 最高/低点到k线close价格变化点数
-    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN_2 = new BigDecimal(50);
-    private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
-
-    private static final Long SLEEP_MILL_SEC = 1500L;
-    private static final String year = "2025";
-    private static final String month = "05";
-    private static final String dayBeginTime = "09:30";
-    private static final String dayEndTime = "11:45";
+    // 使用统一的常量配置
+    private static final BigDecimal STOP_LOSE_POINT = HsimainAlgoConstants.STOP_LOSE_POINT_5MIN;
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -97,7 +79,7 @@ public class HsimainAlgo5MinTest {
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
         // 获取回测数据范围
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0201", year + "0228", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0201", YEAR + "0228", DAY_BEGIN_TIME, DAY_END_TIME);
         // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
@@ -376,12 +358,12 @@ public class HsimainAlgo5MinTest {
         }
         BigDecimal changePrice = klineItem.getClose().subtract(klineItem.getOpen());
         // 当前k线变化超过阈值
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
             return true;
         }
         // 最低点拉升回超过阈值点数
         BigDecimal highChangePrice = klineItem.getClose().subtract(klineItem.getLow());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
             return true;
         }
         // 收涨且前面存在连续n根下跌k线
@@ -393,11 +375,11 @@ public class HsimainAlgo5MinTest {
             return false;
         }
         BigDecimal changePrice = klineItem.getOpen().subtract(klineItem.getClose());
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
             return true;
         }
         BigDecimal highChangePrice = klineItem.getHigh().subtract(klineItem.getClose());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
             return true;
         }
 

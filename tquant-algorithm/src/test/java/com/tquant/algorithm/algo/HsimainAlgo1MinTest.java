@@ -8,6 +8,7 @@ import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
+import com.tquant.algorithm.constants.HsimainAlgoConstants;
 import org.ta4j.core.Trade;
 
 import java.math.BigDecimal;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
+import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 
 /**
  * Description:
