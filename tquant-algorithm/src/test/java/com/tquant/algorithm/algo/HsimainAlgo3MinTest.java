@@ -171,6 +171,7 @@ public class HsimainAlgo3MinTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
+                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损:  多仓最新止损 max(closePrice - STOP_LOSE_POINT,stopLosePrice)
                         if (stopLosePrice.compareTo(closePrice.subtract(STOP_LOSE_POINT_3MIN)) < 0) {
@@ -192,6 +193,7 @@ public class HsimainAlgo3MinTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
+                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损
                         if (stopLosePrice.compareTo(closePrice.add(STOP_LOSE_POINT_3MIN)) > 0) {
