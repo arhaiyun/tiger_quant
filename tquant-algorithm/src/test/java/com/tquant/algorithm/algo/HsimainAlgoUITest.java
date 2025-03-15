@@ -7,7 +7,7 @@ import com.tigerbrokers.stock.openapi.client.struct.enums.FutureKType;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
-import com.tquant.algorithm.constants.HsimainAlgoConstants;
+import com.tquant.algorithm.algos.utils.WeChatMessageUtil;
 
 import java.math.BigDecimal;
 import java.time.ZoneOffset;
@@ -17,6 +17,8 @@ import java.util.List;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
 import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Description:
@@ -35,7 +37,7 @@ public class HsimainAlgoUITest {
      */
     public static void drawKineCanvas() throws InterruptedException {
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -81,11 +83,18 @@ public class HsimainAlgoUITest {
                         consecutiveRisePoint = BigDecimal.ZERO;
                     }
 
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     // 判断多空信号
                     if (longSignal(klineItem, prevKlineItem, consecutiveFall, consecutiveFallPoint)) {
                         buySignals.add(String.format("%d,B", i));
+                        // 发送多头信号通知
+                        String formattedTime = sdf.format(new Date(klineItem.getTime()));
+                        WeChatMessageUtil.sendTradeSignal(HSIMAIN, "多", formattedTime, klineItem.getClose().toString());
                     } else if (shortSignal(klineItem, prevKlineItem, consecutiveRise, consecutiveRisePoint)) {
                         sellSignals.add(String.format("%d,S", i));
+                        // 发送空头信号通知
+                        String formattedTime = sdf.format(new Date(klineItem.getTime()));
+                        WeChatMessageUtil.sendTradeSignal(HSIMAIN, "空", formattedTime, klineItem.getClose().toString());
                     }
                 }
 

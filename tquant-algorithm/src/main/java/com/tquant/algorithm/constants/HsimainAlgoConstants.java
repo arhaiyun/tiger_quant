@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  */
 public class HsimainAlgoConstants {
     /** 交易品种 */
-    public static final String SYMBOL = "HSImain";
+    public static final String HSIMAIN = "HSImain";
 
     /** 每点交易盈亏(HKD) */
     public static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);

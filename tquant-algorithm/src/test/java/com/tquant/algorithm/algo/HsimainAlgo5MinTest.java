@@ -71,7 +71,7 @@ public class HsimainAlgo5MinTest {
     public static void mixedMinDailyStrategy() throws InterruptedException {
 
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -454,7 +454,7 @@ public class HsimainAlgo5MinTest {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min5;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);

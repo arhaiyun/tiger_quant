@@ -8,7 +8,6 @@ import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
-import com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 import org.ta4j.core.Trade;
 
 import java.math.BigDecimal;
@@ -68,7 +67,7 @@ public class HsimainAlgo3MinTest {
     public static void mixedMinDailyStrategy() throws InterruptedException {
 
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -453,7 +452,7 @@ public class HsimainAlgo3MinTest {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min5;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
