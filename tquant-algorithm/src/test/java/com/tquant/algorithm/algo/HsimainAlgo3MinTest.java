@@ -76,7 +76,7 @@ public class HsimainAlgo3MinTest {
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
         // 获取回测数据范围
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0301", YEAR + "0315", DAY_BEGIN_TIME, DAY_END_TIME);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0304", YEAR + "0304", DAY_BEGIN_TIME, DAY_END_TIME);
         // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;

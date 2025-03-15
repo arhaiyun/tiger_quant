@@ -19,9 +19,42 @@ import java.util.List;
 
 public class KlineChartViewer extends JFrame {
 
-    public KlineChartViewer(String title, List<FutureKlineItem> klineItems) {
+    public KlineChartViewer(String title, List<FutureKlineItem> klineItems, List<String> buySignals, List<String> sellSignals) {
         super(title);
         JFreeChart chart = createChart(klineItems);
+        
+        // 添加买入卖出标记
+        XYPlot plot = (XYPlot) chart.getPlot();
+        for (String buySignal : buySignals) {
+            String[] parts = buySignal.split(",");
+            int index = Integer.parseInt(parts[0]);
+            if (index < klineItems.size()) {
+                FutureKlineItem item = klineItems.get(index);
+                double price = item.getClose().doubleValue();
+                org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
+                        String.format("⬆B %.2f", price), new Date(item.getTime()).getTime(), price + (plot.getRangeAxis().getUpperBound() - plot.getRangeAxis().getLowerBound()) * 0.01);
+                annotation.setPaint(Color.RED);
+                annotation.setFont(new Font("SansSerif", Font.BOLD, 10));
+                annotation.setBackgroundPaint(new Color(255, 255, 255, 200));
+                plot.addAnnotation(annotation);
+            }
+        }
+
+        for (String sellSignal : sellSignals) {
+            String[] parts = sellSignal.split(",");
+            int index = Integer.parseInt(parts[0]);
+            if (index < klineItems.size()) {
+                FutureKlineItem item = klineItems.get(index);
+                double price = item.getClose().doubleValue();
+                org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
+                        String.format("⬇S %.2f", price), new Date(item.getTime()).getTime(), price - (plot.getRangeAxis().getUpperBound() - plot.getRangeAxis().getLowerBound()) * 0.01);
+                annotation.setPaint(new Color(0, 150, 0));
+                annotation.setFont(new Font("SansSerif", Font.BOLD, 10));
+                annotation.setBackgroundPaint(new Color(255, 255, 255, 200));
+                plot.addAnnotation(annotation);
+            }
+        }
+        
         ChartPanel chartPanel = new ChartPanel(chart);
         chartPanel.setPreferredSize(new Dimension(1200, 800));
         setContentPane(chartPanel);
@@ -90,45 +123,7 @@ public class KlineChartViewer extends JFrame {
 
     public static void showChart(List<FutureKlineItem> klineItems, List<String> buySignals, List<String> sellSignals) {
         SwingUtilities.invokeLater(() -> {
-            KlineChartViewer viewer = new KlineChartViewer("HSI Futures K-Line Chart", klineItems);
-            Component component = viewer.getContentPane().getComponent(0);
-            if (component instanceof ChartPanel) {
-                ChartPanel chartPanel = (ChartPanel) component;
-                JFreeChart chart = chartPanel.getChart();
-                if (chart != null) {
-                    XYPlot plot = (XYPlot) chart.getPlot();
-
-                    // 添加买入卖出标记
-                    for (String buySignal : buySignals) {
-                        String[] parts = buySignal.split(",");
-                        int index = Integer.parseInt(parts[0]);
-                        if (index < klineItems.size()) {
-                            FutureKlineItem item = klineItems.get(index);
-                            double price = item.getClose().doubleValue();
-                            org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
-                                    String.format("⬆B %.2f", price), new Date(item.getTime()).getTime(), price);
-                            annotation.setPaint(Color.RED);
-                            annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
-                            plot.addAnnotation(annotation);
-                        }
-                    }
-
-                    for (String sellSignal : sellSignals) {
-                        String[] parts = sellSignal.split(",");
-                        int index = Integer.parseInt(parts[0]);
-                        if (index < klineItems.size()) {
-                            FutureKlineItem item = klineItems.get(index);
-                            double price = item.getClose().doubleValue();
-                            org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
-                                    String.format("⬇S %.2f", price), new Date(item.getTime()).getTime(), price);
-                            annotation.setPaint(Color.GREEN);
-                            annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
-                            plot.addAnnotation(annotation);
-                        }
-                    }
-                }
-            }
-
+            KlineChartViewer viewer = new KlineChartViewer("HSI Futures K-Line Chart", klineItems, buySignals, sellSignals);
             viewer.pack();
             viewer.setLocationRelativeTo(null);
             viewer.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
