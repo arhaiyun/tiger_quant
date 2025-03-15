@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,8 +33,9 @@ public class WeChatMessageUtil {
      */
     public static boolean sendTradeSignal(String symbol, String signal, String time, String price) {
         try {
+            String currentTime = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date());
             Map<String, Object> content = new HashMap<>();
-            content.put("content", String.format("交易信号提醒\n交易标的: %s\n信号类型: %s\n触发时间: %s\n触发价格: %s", symbol, signal, time, price));
+            content.put("content", String.format("交易信号提醒\n交易标的: %s\n信号类型: %s\n触发时间: %s\n触发价格: %s\n发送时间: %s", symbol, signal, time, price, currentTime));
 
             Map<String, Object> message = new HashMap<>();
             message.put("msgtype", "text");
