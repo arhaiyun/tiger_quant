@@ -9,7 +9,9 @@ import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
 import com.tquant.algorithm.constants.HsimainAlgoConstants;
 
+import java.math.BigDecimal;
 import java.time.ZoneOffset;
+import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
@@ -51,12 +53,91 @@ public class HsimainAlgoUITest {
                 List<FutureKlineItem> dayKlineData = kLineItems.get(0).getItems();
                 // 按时间排序
                 dayKlineData.sort(Comparator.comparing(FutureKlineItem::getTime));
-                // 为每个交易日创建单独的K线图
-                KlineChartViewer.showChart(dayKlineData);
+
+                // 初始化连续上涨、下跌计数和点数
+                int consecutiveRise = 0;
+                int consecutiveFall = 0;
+                BigDecimal consecutiveRisePoint = BigDecimal.ZERO;
+                BigDecimal consecutiveFallPoint = BigDecimal.ZERO;
+
+                // 遍历K线数据，计算多空信号
+                List<String> buySignals = new ArrayList<>();
+                List<String> sellSignals = new ArrayList<>();
+
+                for (int i = 1; i < dayKlineData.size(); i++) {
+                    FutureKlineItem klineItem = dayKlineData.get(i);
+                    FutureKlineItem prevKlineItem = dayKlineData.get(i - 1);
+
+                    // 更新连续上涨下跌计数
+                    if (klineItem.getClose().compareTo(klineItem.getOpen()) >= 0) {
+                        consecutiveRise++;
+                        consecutiveFall = 0;
+                        consecutiveRisePoint = consecutiveRisePoint.add(klineItem.getClose().subtract(klineItem.getOpen()));
+                        consecutiveFallPoint = BigDecimal.ZERO;
+                    } else {
+                        consecutiveFall++;
+                        consecutiveRise = 0;
+                        consecutiveFallPoint = consecutiveFallPoint.add(klineItem.getOpen().subtract(klineItem.getClose()));
+                        consecutiveRisePoint = BigDecimal.ZERO;
+                    }
+
+                    // 判断多空信号
+                    if (longSignal(klineItem, prevKlineItem, consecutiveFall, consecutiveFallPoint)) {
+                        buySignals.add(String.format("%d,B", i));
+                    } else if (shortSignal(klineItem, prevKlineItem, consecutiveRise, consecutiveRisePoint)) {
+                        sellSignals.add(String.format("%d,S", i));
+                    }
+                }
+
+                // 为每个交易日创建单独的K线图，并标记买卖信号
+                KlineChartViewer.showChart(dayKlineData, buySignals, sellSignals);
                 // 添加短暂延迟，确保窗口正确显示
                 Thread.sleep(1000);
             }
         }
+    }
+
+
+    private static boolean longSignal(FutureKlineItem klineItem, FutureKlineItem prevKlineItem, int consecutiveFall, BigDecimal consecutiveFallPoint) {
+        if (klineItem == null || prevKlineItem == null) {
+            return false;
+        }
+        BigDecimal changePrice = klineItem.getClose().subtract(klineItem.getOpen());
+        // 当前k线变化超过阈值
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
+            return true;
+        }
+        // 最低点拉升回超过阈值点数
+        BigDecimal highChangePrice = klineItem.getClose().subtract(klineItem.getLow());
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
+            return true;
+        }
+        // 收涨且前面存在连续n根下跌k线
+        return klineRise(klineItem) && consecutiveFall >= ACCUMULATE_CNT && consecutiveFallPoint.compareTo(PRICE_CHANGE_FACTOR_CONSECUTIVE) >= 0;
+    }
+
+    private static boolean shortSignal(FutureKlineItem klineItem, FutureKlineItem prevKlineItem, int consecutiveRise, BigDecimal consecutiveRisePoint) {
+        if (klineItem == null || prevKlineItem == null) {
+            return false;
+        }
+        BigDecimal changePrice = klineItem.getOpen().subtract(klineItem.getClose());
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
+            return true;
+        }
+        BigDecimal highChangePrice = klineItem.getHigh().subtract(klineItem.getClose());
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
+            return true;
+        }
+
+        // 收跌且前面存在连续n根上涨k线
+        return !klineRise(klineItem) && consecutiveRise >= ACCUMULATE_CNT && consecutiveRisePoint.compareTo(PRICE_CHANGE_FACTOR_CONSECUTIVE) >= 0;
+    }
+
+    private static boolean klineRise(FutureKlineItem kLineItem) {
+        if (kLineItem != null) {
+            return kLineItem.getClose().compareTo(kLineItem.getOpen()) > 0;
+        }
+        return false;
     }
 
 }
