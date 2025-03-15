@@ -36,10 +36,10 @@ public class HsimainAlgoConstants {
     public static final String MONTH = "03";
     
     /** 日内交易开始时间 */
-    public static final String DAY_BEGIN_TIME = "09:30";
+    public static final String DAY_BEGIN_TIME = "09:45";
     
     /** 日内交易结束时间 */
-    public static final String DAY_END_TIME = "11:45";
+    public static final String DAY_END_TIME = "11:00";
 
     /** k线实体变化点数 */
     public static final BigDecimal PRICE_CHANGE_FACTOR = new BigDecimal(20);

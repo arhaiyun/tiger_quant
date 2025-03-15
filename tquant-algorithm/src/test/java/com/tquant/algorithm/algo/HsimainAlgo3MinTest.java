@@ -51,7 +51,7 @@ public class HsimainAlgo3MinTest {
         // System.out.println(TradeTimeUtils.getTradeTimeList("20240101", "20240601", "09:30", "11:30"));
         System.out.println("Stop Lose Point:" + STOP_LOSE_POINT_3MIN);
         mixedMinDailyStrategy();
-//        averageTrueRangeStat();
+        // averageTrueRangeStat();
     }
 
     /**
@@ -160,7 +160,7 @@ public class HsimainAlgo3MinTest {
                     // 触发了止损
                     if (klineItem.getLow().compareTo(stopLosePrice) < 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) < 0) {
-                        System.out.println(tradeTime + " 触发止损价格A：" + stopLosePrice);
+                        System.out.println(tradeTime + " 触发多头止损价格A：" + stopLosePrice + ", 买入价格：" + lastTransactionPrice + ", 止损点数：" + stopLosePrice.subtract(lastTransactionPrice) + ", 止损金额：" + stopLosePrice.subtract(lastTransactionPrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
                         // TODO: 这里有个问题点，需要更精细化的数据去判断是否触发止损价格，然后及时止损
                         transactionPrice = stopLosePrice;
                         // 平仓多头
@@ -181,7 +181,7 @@ public class HsimainAlgo3MinTest {
                     // 触发了止损
                     if (klineItem.getHigh().compareTo(stopLosePrice) > 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) > 0) {
-                        System.out.println(tradeTime + " 触发止损价格B：" + stopLosePrice);
+                        System.out.println(tradeTime + " 触发空头止损价格B：" + stopLosePrice + ", 原始卖出价格：" + lastTransactionPrice + ", 止损点数：" + lastTransactionPrice.subtract(stopLosePrice) + ", 止损金额：" + lastTransactionPrice.subtract(stopLosePrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
                         transactionPrice = stopLosePrice;
 
                         // 先平仓空头
