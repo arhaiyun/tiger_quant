@@ -14,6 +14,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
+import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 
 /**
  * Description:
@@ -23,19 +24,12 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  */
 public class HsimainAlgoUITest {
 
-    // 使用常量类中定义的参数
-    private static final String SYMBOL = HsimainAlgoConstants.SYMBOL;
-    private static final String year = HsimainAlgoConstants.YEAR;
-    private static final String month = HsimainAlgoConstants.MONTH;
-    private static final String dayBeginTime = HsimainAlgoConstants.DAY_BEGIN_TIME;
-    private static final String dayEndTime = HsimainAlgoConstants.DAY_END_TIME;
-
     public static void main(String[] args) throws InterruptedException {
          drawKineCanvas();
     }
 
     /**
-     * 1.通过老虎证券的 Java open API 获取HSImain股指期货每分钟k线数据，获取时间段通过参数指定如 2025-01-01 22:48:00 - 2025-05-30 23:00:00
+     * 1.通过老虎证券的 Java open API 获取HSImain股指期货每分钟k线数据，获取时间段通过参数指定如 2025-03-01 09:30:00 - 2025-03-14 12:00:00
      */
     public static void drawKineCanvas() throws InterruptedException {
         List<String> symbols = Lists.newArrayList();
@@ -45,7 +39,7 @@ public class HsimainAlgoUITest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
         int counter = 0;
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2025" + month + "01", "2025" + month + "15", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + MONTH + "01", YEAR + MONTH + "15", DAY_BEGIN_TIME, DAY_END_TIME);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
