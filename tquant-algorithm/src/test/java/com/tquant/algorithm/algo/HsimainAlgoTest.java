@@ -96,7 +96,9 @@ public class HsimainAlgoTest {
 
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0901", year + "1001", dayBeginTime, dayEndTime);
+        // 获取回测数据范围
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "1001", year + "1031", dayBeginTime, dayEndTime);
+        // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();

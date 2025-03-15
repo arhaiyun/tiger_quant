@@ -34,12 +34,12 @@ public class TradeTimeUtils {
      * eg:
      * String beginTime = "2023-05-30 00:00:00";
      * String endTime = "2023-05-30 00:00:04";
-     *
-     *  2023-05-30 00:00:00
-     *  2023-05-30 00:00:01
-     *  2023-05-30 00:00:02
-     *  2023-05-30 00:00:03
-     *  2023-05-30 00:00:04
+     * <p>
+     * 2023-05-30 00:00:00
+     * 2023-05-30 00:00:01
+     * 2023-05-30 00:00:02
+     * 2023-05-30 00:00:03
+     * 2023-05-30 00:00:04
      *
      * @param beginTime
      * @param endTime
@@ -85,10 +85,8 @@ public class TradeTimeUtils {
         List<TradeTimeRange> tradeTimeRanges = new ArrayList<>();
 
         for (LocalDate date = startDate; !date.isAfter(endLocalDate); date = date.plusDays(1)) {
-            LocalDateTime beginDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
-                    beginHour, beginMinute);
-            LocalDateTime endDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(),
-                    endHour, endMinute);
+            LocalDateTime beginDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), beginHour, beginMinute);
+            LocalDateTime endDateTime = LocalDateTime.of(date.getYear(), date.getMonth(), date.getDayOfMonth(), endHour, endMinute);
             tradeTimeRanges.add(new TradeTimeRange(beginDateTime.format(formatter), endDateTime.format(formatter)));
         }
         return tradeTimeRanges;
