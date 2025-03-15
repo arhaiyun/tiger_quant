@@ -91,38 +91,40 @@ public class KlineChartViewer extends JFrame {
     public static void showChart(List<FutureKlineItem> klineItems, List<String> buySignals, List<String> sellSignals) {
         SwingUtilities.invokeLater(() -> {
             KlineChartViewer viewer = new KlineChartViewer("HSI Futures K-Line Chart", klineItems);
-            JFreeChart chart = viewer.getContentPane().getComponent(0) instanceof ChartPanel ?
-                    ((ChartPanel) viewer.getContentPane().getComponent(0)).getChart() : null;
+            Component component = viewer.getContentPane().getComponent(0);
+            if (component instanceof ChartPanel) {
+                ChartPanel chartPanel = (ChartPanel) component;
+                JFreeChart chart = chartPanel.getChart();
+                if (chart != null) {
+                    XYPlot plot = (XYPlot) chart.getPlot();
 
-            if (chart != null) {
-                XYPlot plot = (XYPlot) chart.getPlot();
-
-                // 添加买入卖出标记
-                for (String buySignal : buySignals) {
-                    String[] parts = buySignal.split(",");
-                    int index = Integer.parseInt(parts[0]);
-                    if (index < klineItems.size()) {
-                        FutureKlineItem item = klineItems.get(index);
-                        double price = item.getClose().doubleValue();
-                        org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
-                                String.format("⬆B %.2f", price), new Date(item.getTime()).getTime(), price);
-                        annotation.setPaint(Color.RED);
-                        annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
-                        plot.addAnnotation(annotation);
+                    // 添加买入卖出标记
+                    for (String buySignal : buySignals) {
+                        String[] parts = buySignal.split(",");
+                        int index = Integer.parseInt(parts[0]);
+                        if (index < klineItems.size()) {
+                            FutureKlineItem item = klineItems.get(index);
+                            double price = item.getClose().doubleValue();
+                            org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
+                                    String.format("⬆B %.2f", price), new Date(item.getTime()).getTime(), price);
+                            annotation.setPaint(Color.RED);
+                            annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
+                            plot.addAnnotation(annotation);
+                        }
                     }
-                }
 
-                for (String sellSignal : sellSignals) {
-                    String[] parts = sellSignal.split(",");
-                    int index = Integer.parseInt(parts[0]);
-                    if (index < klineItems.size()) {
-                        FutureKlineItem item = klineItems.get(index);
-                        double price = item.getClose().doubleValue();
-                        org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
-                                String.format("⬇S %.2f", price), new Date(item.getTime()).getTime(), price);
-                        annotation.setPaint(Color.GREEN);
-                        annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
-                        plot.addAnnotation(annotation);
+                    for (String sellSignal : sellSignals) {
+                        String[] parts = sellSignal.split(",");
+                        int index = Integer.parseInt(parts[0]);
+                        if (index < klineItems.size()) {
+                            FutureKlineItem item = klineItems.get(index);
+                            double price = item.getClose().doubleValue();
+                            org.jfree.chart.annotations.XYTextAnnotation annotation = new org.jfree.chart.annotations.XYTextAnnotation(
+                                    String.format("⬇S %.2f", price), new Date(item.getTime()).getTime(), price);
+                            annotation.setPaint(Color.GREEN);
+                            annotation.setFont(new Font("SansSerif", Font.BOLD, 12));
+                            plot.addAnnotation(annotation);
+                        }
                     }
                 }
             }

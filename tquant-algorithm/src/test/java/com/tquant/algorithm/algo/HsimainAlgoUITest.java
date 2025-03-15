@@ -41,7 +41,7 @@ public class HsimainAlgoUITest {
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
         int counter = 0;
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + MONTH + "01", YEAR + MONTH + "15", DAY_BEGIN_TIME, DAY_END_TIME);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + MONTH + "03", YEAR + MONTH + "10", DAY_BEGIN_TIME, DAY_END_TIME);
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
             String beginTime = tradeTimeRange.getBeginTime();
