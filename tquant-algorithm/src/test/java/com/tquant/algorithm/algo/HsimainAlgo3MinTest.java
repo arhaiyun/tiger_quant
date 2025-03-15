@@ -26,9 +26,9 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  * Description:
  *
  * @author arhaiyun
- * @date 2024/05/20
+ * @date 2025/03/15
  */
-public class HsimainAlgoTest {
+public class HsimainAlgo3MinTest {
 
     private static final String SYMBOL = "HSImain";
     private static final int ACCUMULATE_CNT = 2;

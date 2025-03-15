@@ -26,9 +26,9 @@ import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
  * Description:
  *
  * @author arhaiyun
- * @date 2024/05/20
+ * @date 2025/03/15
  */
-public class HsimainAlgoTest {
+public class HsimainAlgo5MinTest {
 
     private static final String SYMBOL = "HSImain";
     private static final int ACCUMULATE_CNT = 2;
@@ -40,7 +40,7 @@ public class HsimainAlgoTest {
     // 1单位买卖手续费 HKD
     private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
     // 止损点数
-    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(45);
+    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(60);
     // k线实体变化点数
     private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(20);
     // 最高/低点到k线close价格变化点数
@@ -140,18 +140,18 @@ public class HsimainAlgoTest {
             List<TradeRecord> tradeRecords = new ArrayList<>();
 
             // 获取日内1-3-5分钟级别k线数据
-            List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            List<FutureKlineItem> kLineItems3Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
 
-            if (kLineItems3Min.size() == 0) {
+            if (kLineItems5Min.size() == 0) {
                 System.out.println("返回kline数据为空");
                 continue;
             } else {
-                System.out.println("返回kline数据:" + kLineItems3Min.size());
+                System.out.println("返回kline数据:" + kLineItems5Min.size());
             }
 
-            FutureKlineItem klineItem = kLineItems3Min.get(0);
+            FutureKlineItem klineItem = kLineItems5Min.get(0);
             if (klineItem.getClose().compareTo(klineItem.getOpen()) > 0) {
                 consecutiveRise = 1;
                 consecutiveRisePoint = klineItem.getClose().subtract(klineItem.getOpen());
@@ -160,11 +160,11 @@ public class HsimainAlgoTest {
                 consecutiveFallPoint = klineItem.getOpen().subtract(klineItem.getClose());
             }
 
-            for (int i = 1; i < kLineItems3Min.size(); i++) {
+            for (int i = 1; i < kLineItems5Min.size(); i++) {
                 // TODO: 获取3根对应的1minKline ... 细节化
 
-                klineItem = kLineItems3Min.get(i);
-                FutureKlineItem prevKlineItem = kLineItems3Min.get(i - 1);
+                klineItem = kLineItems5Min.get(i);
+                FutureKlineItem prevKlineItem = kLineItems5Min.get(i - 1);
 
                 // 日内最高、最低点，用于做相对位置的参考
                 dailyHigh = dailyHigh.compareTo(klineItem.getHigh()) > 0 ? dailyHigh : klineItem.getHigh();
@@ -311,7 +311,7 @@ public class HsimainAlgoTest {
                 }*/
 
                 // 最后一根k线, 平仓日内所有的仓位
-                if (i == kLineItems3Min.size() - 1) {
+                if (i == kLineItems5Min.size() - 1) {
                     if (longPosition > 0) {
                         transactionPrice = closePrice;
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, longPosition, TRANSACTION_FEE);
