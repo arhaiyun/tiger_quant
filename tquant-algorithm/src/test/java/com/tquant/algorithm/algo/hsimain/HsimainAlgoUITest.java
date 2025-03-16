@@ -30,13 +30,13 @@ import java.util.Date;
 public class HsimainAlgoUITest {
 
     public static void main(String[] args) throws InterruptedException {
-         drawKineCanvas();
+        drawKLineCanvas();
     }
 
     /**
      * 1.通过老虎证券的 Java open API 获取HSImain股指期货每分钟k线数据，获取时间段通过参数指定如 2025-03-01 09:30:00 - 2025-03-14 12:00:00
      */
-    public static void drawKineCanvas() throws InterruptedException {
+    public static void drawKLineCanvas() throws InterruptedException {
         List<String> symbols = Lists.newArrayList();
         symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min3;
