@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algo;
+package com.tquant.algorithm.algo.tesla;
 
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.quote.item.KlineItem;

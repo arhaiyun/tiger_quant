@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algo;
+package com.tquant.algorithm.algo.hsimain;
 
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
@@ -21,37 +21,15 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
+import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 
 /**
  * Description:
  *
  * @author arhaiyun
- * @date 2024/05/20
+ * @date 2025/03/15
  */
-public class HsimainAlgoTest {
-
-    private static final String SYMBOL = "HSImain";
-    private static final int ACCUMULATE_CNT = 2;
-    private static final int SHARE_PER_TRADE = 1;
-    private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
-
-    // 每点交易盈亏 HKD
-    private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);
-    // 1单位买卖手续费 HKD
-    private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
-    // 止损点数
-    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(45);
-    // k线实体变化点数
-    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(20);
-    // 最高/低点到k线close价格变化点数
-    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN_2 = new BigDecimal(50);
-    private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
-
-    private static final Long SLEEP_MILL_SEC = 1500L;
-    private static final String year = "2025";
-    private static final String month = "05";
-    private static final String dayBeginTime = "09:30";
-    private static final String dayEndTime = "11:45";
+public class HsimainAlgo3MinTest {
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -70,9 +48,9 @@ public class HsimainAlgoTest {
     public static void main(String[] args) throws InterruptedException {
         // testMinDailyStrategy();
         // System.out.println(TradeTimeUtils.getTradeTimeList("20240101", "20240601", "09:30", "11:30"));
-        System.out.println("Stop Lose Point:" + STOP_LOSE_POINT);
+        System.out.println("Stop Lose Point:" + STOP_LOSE_POINT_3MIN);
         mixedMinDailyStrategy();
-//        averageTrueRangeStat();
+        // averageTrueRangeStat();
     }
 
     /**
@@ -89,7 +67,7 @@ public class HsimainAlgoTest {
     public static void mixedMinDailyStrategy() throws InterruptedException {
 
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -97,7 +75,7 @@ public class HsimainAlgoTest {
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
         // 获取回测数据范围
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0201", year + "0228", dayBeginTime, dayEndTime);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0304", YEAR + "0304", DAY_BEGIN_TIME, DAY_END_TIME);
         // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
@@ -181,7 +159,7 @@ public class HsimainAlgoTest {
                     // 触发了止损
                     if (klineItem.getLow().compareTo(stopLosePrice) < 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) < 0) {
-                        System.out.println(tradeTime + " 触发止损价格A：" + stopLosePrice);
+                        System.out.println(tradeTime + " 触发多头止损价格A：" + stopLosePrice + ", 买入价格：" + lastTransactionPrice + ", 止损点数：" + stopLosePrice.subtract(lastTransactionPrice) + ", 止损金额：" + stopLosePrice.subtract(lastTransactionPrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
                         // TODO: 这里有个问题点，需要更精细化的数据去判断是否触发止损价格，然后及时止损
                         transactionPrice = stopLosePrice;
                         // 平仓多头
@@ -192,17 +170,18 @@ public class HsimainAlgoTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
+                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损:  多仓最新止损 max(closePrice - STOP_LOSE_POINT,stopLosePrice)
-                        if (stopLosePrice.compareTo(closePrice.subtract(STOP_LOSE_POINT)) < 0) {
-                            stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
+                        if (stopLosePrice.compareTo(closePrice.subtract(STOP_LOSE_POINT_3MIN)) < 0) {
+                            stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
                         }
                     }
                 } else if (shortPosition > 0) {
                     // 触发了止损
                     if (klineItem.getHigh().compareTo(stopLosePrice) > 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) > 0) {
-                        System.out.println(tradeTime + " 触发止损价格B：" + stopLosePrice);
+                        System.out.println(tradeTime + " 触发空头止损价格B：" + stopLosePrice + ", 原始卖出价格：" + lastTransactionPrice + ", 止损点数：" + lastTransactionPrice.subtract(stopLosePrice) + ", 止损金额：" + lastTransactionPrice.subtract(stopLosePrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
                         transactionPrice = stopLosePrice;
 
                         // 先平仓空头
@@ -213,10 +192,11 @@ public class HsimainAlgoTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
+                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损
-                        if (stopLosePrice.compareTo(closePrice.add(STOP_LOSE_POINT)) > 0) {
-                            stopLosePrice = closePrice.add(STOP_LOSE_POINT);
+                        if (stopLosePrice.compareTo(closePrice.add(STOP_LOSE_POINT_3MIN)) > 0) {
+                            stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
                         }
                     }
                 }
@@ -234,7 +214,7 @@ public class HsimainAlgoTest {
                         // 交易费用
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // 多单止损价格
-                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
+                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
                     } else if (longPosition == 0 && shortPosition == SHARE_PER_TRADE) { // 当前持有一单位空头持仓
                         // 结合止损价设定实际交易价格
                         transactionPrice = closePrice;
@@ -254,7 +234,7 @@ public class HsimainAlgoTest {
                         longPosition += SHARE_PER_TRADE;
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // stopLosePrice = openPrice.subtract(new BigDecimal(5));
-                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
+                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
                     }
                 } else if (shortSignal(klineItem, prevKlineItem, consecutiveRise, consecutiveRisePoint)) {
                     if (longPosition == 0 && shortPosition == 0) {
@@ -268,7 +248,7 @@ public class HsimainAlgoTest {
                         // 交易费用
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // 空单止损价格
-                        stopLosePrice = closePrice.add(STOP_LOSE_POINT);
+                        stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
                     } else if (longPosition == SHARE_PER_TRADE && shortPosition == 0) {
                         // 结合止损价设定实际交易价格
                         transactionPrice = closePrice;
@@ -288,7 +268,7 @@ public class HsimainAlgoTest {
 
                         shortPosition += SHARE_PER_TRADE;
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
-                        stopLosePrice = closePrice.add(STOP_LOSE_POINT);
+                        stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
                     }
                 }
 
@@ -376,12 +356,12 @@ public class HsimainAlgoTest {
         }
         BigDecimal changePrice = klineItem.getClose().subtract(klineItem.getOpen());
         // 当前k线变化超过阈值
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
             return true;
         }
         // 最低点拉升回超过阈值点数
         BigDecimal highChangePrice = klineItem.getClose().subtract(klineItem.getLow());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
             return true;
         }
         // 收涨且前面存在连续n根下跌k线
@@ -393,11 +373,11 @@ public class HsimainAlgoTest {
             return false;
         }
         BigDecimal changePrice = klineItem.getOpen().subtract(klineItem.getClose());
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
             return true;
         }
         BigDecimal highChangePrice = klineItem.getHigh().subtract(klineItem.getClose());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
             return true;
         }
 
@@ -472,7 +452,7 @@ public class HsimainAlgoTest {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add(SYMBOL);
+        symbols.add(HSIMAIN);
         FutureKType kType = FutureKType.min5;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);

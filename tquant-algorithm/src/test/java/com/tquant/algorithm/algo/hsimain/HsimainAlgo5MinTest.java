@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algo;
+package com.tquant.algorithm.algo.hsimain;
 
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
@@ -8,6 +8,7 @@ import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
+import com.tquant.algorithm.constants.HsimainAlgoConstants;
 import org.ta4j.core.Trade;
 
 import java.math.BigDecimal;
@@ -29,7 +30,10 @@ import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
  * @author arhaiyun
  * @date 2025/03/15
  */
-public class HsimainAlgo3MinTest {
+public class HsimainAlgo5MinTest {
+
+    // 使用统一的常量配置
+    private static final BigDecimal STOP_LOSE_POINT = HsimainAlgoConstants.STOP_LOSE_POINT_5MIN;
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -48,9 +52,9 @@ public class HsimainAlgo3MinTest {
     public static void main(String[] args) throws InterruptedException {
         // testMinDailyStrategy();
         // System.out.println(TradeTimeUtils.getTradeTimeList("20240101", "20240601", "09:30", "11:30"));
-        System.out.println("Stop Lose Point:" + STOP_LOSE_POINT_3MIN);
+        System.out.println("Stop Lose Point:" + STOP_LOSE_POINT);
         mixedMinDailyStrategy();
-        // averageTrueRangeStat();
+//        averageTrueRangeStat();
     }
 
     /**
@@ -75,7 +79,7 @@ public class HsimainAlgo3MinTest {
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
         // 获取回测数据范围
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0304", YEAR + "0304", DAY_BEGIN_TIME, DAY_END_TIME);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0201", YEAR + "0228", DAY_BEGIN_TIME, DAY_END_TIME);
         // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
@@ -118,18 +122,18 @@ public class HsimainAlgo3MinTest {
             List<TradeRecord> tradeRecords = new ArrayList<>();
 
             // 获取日内1-3-5分钟级别k线数据
-            List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            List<FutureKlineItem> kLineItems3Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
 
-            if (kLineItems3Min.size() == 0) {
+            if (kLineItems5Min.size() == 0) {
                 System.out.println("返回kline数据为空");
                 continue;
             } else {
-                System.out.println("返回kline数据:" + kLineItems3Min.size());
+                System.out.println("返回kline数据:" + kLineItems5Min.size());
             }
 
-            FutureKlineItem klineItem = kLineItems3Min.get(0);
+            FutureKlineItem klineItem = kLineItems5Min.get(0);
             if (klineItem.getClose().compareTo(klineItem.getOpen()) > 0) {
                 consecutiveRise = 1;
                 consecutiveRisePoint = klineItem.getClose().subtract(klineItem.getOpen());
@@ -138,11 +142,11 @@ public class HsimainAlgo3MinTest {
                 consecutiveFallPoint = klineItem.getOpen().subtract(klineItem.getClose());
             }
 
-            for (int i = 1; i < kLineItems3Min.size(); i++) {
+            for (int i = 1; i < kLineItems5Min.size(); i++) {
                 // TODO: 获取3根对应的1minKline ... 细节化
 
-                klineItem = kLineItems3Min.get(i);
-                FutureKlineItem prevKlineItem = kLineItems3Min.get(i - 1);
+                klineItem = kLineItems5Min.get(i);
+                FutureKlineItem prevKlineItem = kLineItems5Min.get(i - 1);
 
                 // 日内最高、最低点，用于做相对位置的参考
                 dailyHigh = dailyHigh.compareTo(klineItem.getHigh()) > 0 ? dailyHigh : klineItem.getHigh();
@@ -159,7 +163,7 @@ public class HsimainAlgo3MinTest {
                     // 触发了止损
                     if (klineItem.getLow().compareTo(stopLosePrice) < 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) < 0) {
-                        System.out.println(tradeTime + " 触发多头止损价格A：" + stopLosePrice + ", 买入价格：" + lastTransactionPrice + ", 止损点数：" + stopLosePrice.subtract(lastTransactionPrice) + ", 止损金额：" + stopLosePrice.subtract(lastTransactionPrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
+                        System.out.println(tradeTime + " 触发止损价格A：" + stopLosePrice);
                         // TODO: 这里有个问题点，需要更精细化的数据去判断是否触发止损价格，然后及时止损
                         transactionPrice = stopLosePrice;
                         // 平仓多头
@@ -170,18 +174,17 @@ public class HsimainAlgo3MinTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(transactionPrice.subtract(lastTransactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
-                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损:  多仓最新止损 max(closePrice - STOP_LOSE_POINT,stopLosePrice)
-                        if (stopLosePrice.compareTo(closePrice.subtract(STOP_LOSE_POINT_3MIN)) < 0) {
-                            stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
+                        if (stopLosePrice.compareTo(closePrice.subtract(STOP_LOSE_POINT)) < 0) {
+                            stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
                         }
                     }
                 } else if (shortPosition > 0) {
                     // 触发了止损
                     if (klineItem.getHigh().compareTo(stopLosePrice) > 0) {
 //                    if (klineItem.getClose().compareTo(stopLosePrice) > 0) {
-                        System.out.println(tradeTime + " 触发空头止损价格B：" + stopLosePrice + ", 原始卖出价格：" + lastTransactionPrice + ", 止损点数：" + lastTransactionPrice.subtract(stopLosePrice) + ", 止损金额：" + lastTransactionPrice.subtract(stopLosePrice).multiply(SHARE_PER_TRADE_VOL).multiply(PROFIT_LOSS_FACTOR));
+                        System.out.println(tradeTime + " 触发止损价格B：" + stopLosePrice);
                         transactionPrice = stopLosePrice;
 
                         // 先平仓空头
@@ -192,11 +195,10 @@ public class HsimainAlgo3MinTest {
 
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         pnlWithoutFee = pnlWithoutFee.add(lastTransactionPrice.subtract(transactionPrice).multiply(PROFIT_LOSS_FACTOR).multiply(SHARE_PER_TRADE_VOL));
-                        System.out.println("tradeFee & pnlWithoutFee:" + tradeFee + " " + pnlWithoutFee);
                     } else {
                         // 动态更新移动止损
-                        if (stopLosePrice.compareTo(closePrice.add(STOP_LOSE_POINT_3MIN)) > 0) {
-                            stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
+                        if (stopLosePrice.compareTo(closePrice.add(STOP_LOSE_POINT)) > 0) {
+                            stopLosePrice = closePrice.add(STOP_LOSE_POINT);
                         }
                     }
                 }
@@ -214,7 +216,7 @@ public class HsimainAlgo3MinTest {
                         // 交易费用
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // 多单止损价格
-                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
+                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
                     } else if (longPosition == 0 && shortPosition == SHARE_PER_TRADE) { // 当前持有一单位空头持仓
                         // 结合止损价设定实际交易价格
                         transactionPrice = closePrice;
@@ -234,7 +236,7 @@ public class HsimainAlgo3MinTest {
                         longPosition += SHARE_PER_TRADE;
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // stopLosePrice = openPrice.subtract(new BigDecimal(5));
-                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT_3MIN);
+                        stopLosePrice = closePrice.subtract(STOP_LOSE_POINT);
                     }
                 } else if (shortSignal(klineItem, prevKlineItem, consecutiveRise, consecutiveRisePoint)) {
                     if (longPosition == 0 && shortPosition == 0) {
@@ -248,7 +250,7 @@ public class HsimainAlgo3MinTest {
                         // 交易费用
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
                         // 空单止损价格
-                        stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
+                        stopLosePrice = closePrice.add(STOP_LOSE_POINT);
                     } else if (longPosition == SHARE_PER_TRADE && shortPosition == 0) {
                         // 结合止损价设定实际交易价格
                         transactionPrice = closePrice;
@@ -268,7 +270,7 @@ public class HsimainAlgo3MinTest {
 
                         shortPosition += SHARE_PER_TRADE;
                         tradeFee = tradeFee.add(TRANSACTION_FEE.multiply(SHARE_PER_TRADE_VOL));
-                        stopLosePrice = closePrice.add(STOP_LOSE_POINT_3MIN);
+                        stopLosePrice = closePrice.add(STOP_LOSE_POINT);
                     }
                 }
 
@@ -291,7 +293,7 @@ public class HsimainAlgo3MinTest {
                 }*/
 
                 // 最后一根k线, 平仓日内所有的仓位
-                if (i == kLineItems3Min.size() - 1) {
+                if (i == kLineItems5Min.size() - 1) {
                     if (longPosition > 0) {
                         transactionPrice = closePrice;
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, longPosition, TRANSACTION_FEE);

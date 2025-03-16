@@ -1,4 +1,4 @@
-package com.tquant.algorithm.algo;
+package com.tquant.algorithm.algo.hsimain;
 
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
@@ -8,7 +8,6 @@ import com.tquant.algorithm.algos.entity.TradeRecord;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
-import com.tquant.algorithm.constants.HsimainAlgoConstants;
 import org.ta4j.core.Trade;
 
 import java.math.BigDecimal;
@@ -22,18 +21,37 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.tquant.algorithm.algos.utils.TradeTimeUtils.toUnixTime;
-import static com.tquant.algorithm.constants.HsimainAlgoConstants.*;
 
 /**
  * Description:
  *
  * @author arhaiyun
- * @date 2025/03/15
+ * @date 2024/05/20
  */
-public class HsimainAlgo5MinTest {
+public class HsimainAlgoTest {
 
-    // 使用统一的常量配置
-    private static final BigDecimal STOP_LOSE_POINT = HsimainAlgoConstants.STOP_LOSE_POINT_5MIN;
+    private static final String SYMBOL = "HSImain";
+    private static final int ACCUMULATE_CNT = 2;
+    private static final int SHARE_PER_TRADE = 1;
+    private static final BigDecimal SHARE_PER_TRADE_VOL = new BigDecimal(SHARE_PER_TRADE);
+
+    // 每点交易盈亏 HKD
+    private static final BigDecimal PROFIT_LOSS_FACTOR = new BigDecimal(50.0);
+    // 1单位买卖手续费 HKD
+    private static final BigDecimal TRANSACTION_FEE = new BigDecimal(25.0);
+    // 止损点数
+    private static final BigDecimal STOP_LOSE_POINT = new BigDecimal(45);
+    // k线实体变化点数
+    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN = new BigDecimal(20);
+    // 最高/低点到k线close价格变化点数
+    private static final BigDecimal PRICE_CHANGE_FACTOR_3MIN_2 = new BigDecimal(50);
+    private static final BigDecimal PRICE_CHANGE_FACTOR_CONSECUTIVE = new BigDecimal(60);
+
+    private static final Long SLEEP_MILL_SEC = 1500L;
+    private static final String year = "2025";
+    private static final String month = "05";
+    private static final String dayBeginTime = "09:30";
+    private static final String dayEndTime = "11:45";
 
     // 初始资金为0
     private static BigDecimal balance = BigDecimal.ZERO;
@@ -71,7 +89,7 @@ public class HsimainAlgo5MinTest {
     public static void mixedMinDailyStrategy() throws InterruptedException {
 
         List<String> symbols = Lists.newArrayList();
-        symbols.add(HSIMAIN);
+        symbols.add(SYMBOL);
         FutureKType kType = FutureKType.min3;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
@@ -79,7 +97,7 @@ public class HsimainAlgo5MinTest {
         int counter = 0;
 //        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList("2024" + month + "01", "2024" + month + "31", dayBeginTime, dayEndTime);
         // 获取回测数据范围
-        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(YEAR + "0201", YEAR + "0228", DAY_BEGIN_TIME, DAY_END_TIME);
+        List<TradeTimeRange> tradeTimeList = TradeTimeUtils.getTradeTimeList(year + "0201", year + "0228", dayBeginTime, dayEndTime);
         // 针对每天的交易数据做日内策略
         for (TradeTimeRange tradeTimeRange : tradeTimeList) {
             counter++;
@@ -122,18 +140,18 @@ public class HsimainAlgo5MinTest {
             List<TradeRecord> tradeRecords = new ArrayList<>();
 
             // 获取日内1-3-5分钟级别k线数据
-            // List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
-            List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            List<FutureKlineItem> kLineItems1Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min1, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            List<FutureKlineItem> kLineItems3Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min3, toUnixTime(beginTime), toUnixTime(endTime), 800);
+            // List<FutureKlineItem> kLineItems5Min = KlineUtils.getSortedFutureKlineItems(symbols, FutureKType.min5, toUnixTime(beginTime), toUnixTime(endTime), 800);
 
-            if (kLineItems5Min.size() == 0) {
+            if (kLineItems3Min.size() == 0) {
                 System.out.println("返回kline数据为空");
                 continue;
             } else {
-                System.out.println("返回kline数据:" + kLineItems5Min.size());
+                System.out.println("返回kline数据:" + kLineItems3Min.size());
             }
 
-            FutureKlineItem klineItem = kLineItems5Min.get(0);
+            FutureKlineItem klineItem = kLineItems3Min.get(0);
             if (klineItem.getClose().compareTo(klineItem.getOpen()) > 0) {
                 consecutiveRise = 1;
                 consecutiveRisePoint = klineItem.getClose().subtract(klineItem.getOpen());
@@ -142,11 +160,11 @@ public class HsimainAlgo5MinTest {
                 consecutiveFallPoint = klineItem.getOpen().subtract(klineItem.getClose());
             }
 
-            for (int i = 1; i < kLineItems5Min.size(); i++) {
+            for (int i = 1; i < kLineItems3Min.size(); i++) {
                 // TODO: 获取3根对应的1minKline ... 细节化
 
-                klineItem = kLineItems5Min.get(i);
-                FutureKlineItem prevKlineItem = kLineItems5Min.get(i - 1);
+                klineItem = kLineItems3Min.get(i);
+                FutureKlineItem prevKlineItem = kLineItems3Min.get(i - 1);
 
                 // 日内最高、最低点，用于做相对位置的参考
                 dailyHigh = dailyHigh.compareTo(klineItem.getHigh()) > 0 ? dailyHigh : klineItem.getHigh();
@@ -293,7 +311,7 @@ public class HsimainAlgo5MinTest {
                 }*/
 
                 // 最后一根k线, 平仓日内所有的仓位
-                if (i == kLineItems5Min.size() - 1) {
+                if (i == kLineItems3Min.size() - 1) {
                     if (longPosition > 0) {
                         transactionPrice = closePrice;
                         TradeRecord tradeRecord = new TradeRecord(tradeTime, Trade.TradeType.SELL, transactionPrice, longPosition, TRANSACTION_FEE);
@@ -358,12 +376,12 @@ public class HsimainAlgo5MinTest {
         }
         BigDecimal changePrice = klineItem.getClose().subtract(klineItem.getOpen());
         // 当前k线变化超过阈值
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
             return true;
         }
         // 最低点拉升回超过阈值点数
         BigDecimal highChangePrice = klineItem.getClose().subtract(klineItem.getLow());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
             return true;
         }
         // 收涨且前面存在连续n根下跌k线
@@ -375,11 +393,11 @@ public class HsimainAlgo5MinTest {
             return false;
         }
         BigDecimal changePrice = klineItem.getOpen().subtract(klineItem.getClose());
-        if (changePrice.compareTo(PRICE_CHANGE_FACTOR) >= 0) {
+        if (changePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN) >= 0) {
             return true;
         }
         BigDecimal highChangePrice = klineItem.getHigh().subtract(klineItem.getClose());
-        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_HL) >= 0) {
+        if (highChangePrice.compareTo(PRICE_CHANGE_FACTOR_3MIN_2) >= 0) {
             return true;
         }
 
@@ -454,7 +472,7 @@ public class HsimainAlgo5MinTest {
 
         KlineUtils kLineUtils = new KlineUtils();
         List<String> symbols = Lists.newArrayList();
-        symbols.add(HSIMAIN);
+        symbols.add(SYMBOL);
         FutureKType kType = FutureKType.min5;
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);

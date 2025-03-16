@@ -1,9 +1,10 @@
-package com.tquant.algorithm.algo;
+package com.tquant.algorithm.algo.hsimain;
 
 import com.google.common.collect.Lists;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineBatchItem;
 import com.tigerbrokers.stock.openapi.client.https.domain.future.item.FutureKlineItem;
 import com.tigerbrokers.stock.openapi.client.struct.enums.FutureKType;
+import com.tquant.algorithm.algo.KlineChartViewer;
 import com.tquant.algorithm.algos.entity.TradeTimeRange;
 import com.tquant.algorithm.algos.utils.KlineUtils;
 import com.tquant.algorithm.algos.utils.TradeTimeUtils;
