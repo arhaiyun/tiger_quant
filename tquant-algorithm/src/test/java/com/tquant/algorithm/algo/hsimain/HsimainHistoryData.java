@@ -78,7 +78,7 @@ public class HsimainHistoryData {
         // 或者使用 ZoneOffset.UTC
         ZoneOffset offset = ZoneOffset.ofHours(8);
 
-        List<FutureKlineBatchItem> kLineItems = KlineUtils.getAllFutureKlineItems(symbols, kType, toUnixTime("2025-03-14 00:00:00"), toUnixTime("2025-03-16 00:00:00"), 800);
+        List<FutureKlineBatchItem> kLineItems = KlineUtils.getAllFutureKlineItems(symbols, kType, toUnixTime("2025-03-13 00:00:00"), toUnixTime("2025-03-16 00:00:00"), 800);
         System.out.println("kLineItems.size() = " + kLineItems.size());
 
         // 每天的最大振幅点数，平均振幅点数
@@ -122,7 +122,13 @@ public class HsimainHistoryData {
                     totalCloseOpenCount = totalCloseOpenCount.add(BigDecimal.ONE);
 
                     // 将数据写入CSV文件
-                    String time = LocalDateTime.ofInstant(Instant.ofEpochSecond(item.getTime()), offset).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+                    // 使用正确的时间戳转换方式
+                    LocalDateTime dateTime = LocalDateTime.ofInstant(
+                            Instant.ofEpochSecond(item.getTime()/1000),
+                            ZoneOffset.ofHours(8)
+                    );
+                    System.out.println("item.getTime() = " + item.getTime());
+                    String time = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
                     writer.write(String.format("%s,%s,%s,%s,%s,%s,%s\n",
                             time, open, high, low, close, amplitude, closeOpen));
                 }
